@@ -1,4 +1,8 @@
 
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -63,7 +67,7 @@
 
             <div class="container-fluid" >
                 <div class="row" style="padding: 20px">  
-                    <form method="post" action="">   
+                    <form method="post" action="" >   
                         <div class="container">
                             <div class="col-sm-3">
 
@@ -93,7 +97,7 @@
                             </div>
 
                             <div class="col-sm-6" style="margin-top: 25px" >
-                                <button  type="submit" style="margin-left: 20px" name='submit'id="submit" class="btn btn-success mb-2">Load Payslips</button>
+                                <button  type="submit" style="margin-left: 20px" name='submitSalary'id="submitSalary" class="btn btn-success mb-2">Load Payslips</button>
 
                             </div>
 
@@ -108,16 +112,25 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="col-sm-6">
-                                    <h4 class="card-title" style="text-align: left;  font-weight: bold; color: maroon">Salary Payment For the Month  <?php if (isset($_POST['submit'])) {
-    echo $_POST['salaryDate'];
-} ?> <br> </h4> <br>
+                                    <h4 class="card-title" style="text-align: left;  font-weight: bold; color: maroon">
+                                        <?php
+                                        if (isset($_POST['submitSalary'])) {
+                                            echo "Salary Payment For the Month: " . $_POST['salaryDate'];
+                                            $_SESSION['salaryDate'] = $_POST['salaryDate'];
+                                        } else
+                                            echo "Approved Payslips";
+                                        ?> 
+                                        <br> </h4> <br>
                                 </div>
-                                <h4 class="card-title" style="text-align: right;  font-weight: bold; color: maroon">Employer IBAN: <?php if (isset($_POST['submit'])) {
-    echo $_POST['employerBankNo'];
-} ?> <br> </h4> <br>
+                                <h4 class="card-title" style="text-align: right;  font-weight: bold; color: maroon">
+                                    <?php
+                                    if (isset($_POST['submitSalary']) && $_POST['employerBankNo'] != '') {
+                                        echo "Employer IBAN: " . $_POST['employerBankNo'];
+                                    }
+                                    ?>  <br> </h4> <br>
 
                                 <table class="table" id='payslips'>
-                                    
+
                                 </table>
                             </div>
                         </div>
@@ -126,31 +139,34 @@
             </div>
         </div>
 
-                <script type="text/javascript">
 
-          var xmlhttp = new XMLHttpRequest();
+        <!-------------------------------------java scripts------------------------------------>
+        <script type="text/javascript">
+
+            var salaryDate = document.getElementById("salaryDate").value;
+            var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function () {
                 if (this.readyState === 4)
                     document.getElementById("payslips").innerHTML = this.responseText;
             };
             xmlhttp.open("POST", "sql/payslips.php", false);
             xmlhttp.send();
-            
-       </script>
+
+        </script>
 
         <script type="text/javascript">
-            
-            $(document).ready(function () {
-                $("#submitDate").click(function () {
 
-                    // disable button
-                    $(this).prop("disabled", true);
-                    // add spinner to button
-                    $(this).html(
-                            `Fetching...  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
-                            );
-                });
-            });
+//            $(document).ready(function () {
+//                $("#submit").click(function () {
+//
+//                    // disable button
+//                    $(this).prop("disabled", true);
+//                    // add spinner to button
+//                    $(this).html(
+//                            `Fetching...  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
+//                            );
+//                });
+//            });
 
 
             $(function () {
@@ -160,5 +176,17 @@
                 });
             });
         </script>
+
+        <script>
+            var input = document.getElementById("salaryDate");
+            input.addEventListener("keyup", function (event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    document.getElementById("submitSalary").click();
+                }
+            });
+        </script>
+        <!-------------------------------End of Java Scripts------------------------------------>        
+
     </body>
 </html>
