@@ -128,8 +128,8 @@ session_start();
                                         echo "Employer IBAN: " . $_POST['employerBankNo'];
                                     }
                                     ?>  <br> </h4> <br>
-                                    <div class="table-responsive-sm">       
-                                <table class="table table-hover table-sm" id='payslips'>
+                                 <div style="overflow-x:auto;">       
+                                <table class="table table-bordered table-hover table-sm" id='payslips'>
 
                                 </table>
                                  </div>
