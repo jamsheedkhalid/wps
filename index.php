@@ -129,7 +129,7 @@ session_start();
                                     }
                                     ?>  <br> </h4> <br>
                                  <div style="overflow-x:auto;">       
-                                <table class="table table-bordered table-hover table-sm" id='payslips'>
+                                <table class="table table-striped  table-hover table-sm" id='payslips'>
 
                                 </table>
                                  </div>
