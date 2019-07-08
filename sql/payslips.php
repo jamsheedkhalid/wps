@@ -87,7 +87,7 @@ if ($result->num_rows > 0) {
 
     while ($row = $result->fetch_assoc()) {
         echo "<tr><td>" . $row["empID"] . "</td>"
-        . "<td>" . $row["first_name"] . $row["middle_name"] . $row["last_name"] . "</td>";
+        . "<td>" . $row["first_name"] ." ". $row["middle_name"] ." ".  $row["last_name"] . "</td>";
 
         $sqlID = "SELECT additional_info employee_account from employee_additional_details WHERE additional_field_id = 1 and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
