@@ -1,12 +1,14 @@
 <?php
 
 include('../config/dbConfig.php');
+date_default_timezone_set('Asia/Dubai'); 
 
 session_start();
 
 if (($_SESSION['salaryDate']) != '') {
     $salaryDate = $_SESSION['salaryDate'];
     $salaryDate = explode('/', $salaryDate);
+    $_SESSION['salaryDate'] = $salaryDate[0] . $salaryDate[1];
     $salaryDate = $salaryDate[1] . '-' . $salaryDate[0] . '-01';
 } else
     $salaryDate = '';
@@ -67,8 +69,7 @@ if ($result->num_rows > 0) {
 
 
     echo "  <thead class=thead-dark ><tr>
-                                            <th scope=col>ID</th>
-                                            <th scope=col>Name</th>
+                                            <th scope=col>EDR</th>
                                             <th scope=col>Emp. ID</th>
                                             <th scope=col>Routing No.</th>
                                             <th scope=col>Employee Account</th>
@@ -84,10 +85,12 @@ if ($result->num_rows > 0) {
 
 
 
-
+    $edrCount = 0;
+    $totalSalary = 0.00;
     while ($row = $result->fetch_assoc()) {
-        echo "<tr><td>" . $row["empID"] . "</td>"
-        . "<td>" . $row["first_name"] ." ". $row["middle_name"] ." ".  $row["last_name"] . "</td>";
+
+        $edrCount++;
+        echo "<tr><td>EDR</td>";
 
         $sqlID = "SELECT additional_info employee_account from employee_additional_details WHERE additional_field_id = 1 and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
@@ -111,26 +114,43 @@ if ($result->num_rows > 0) {
                 echo "<td>" . $rowID["IBAN"] . "</td>";
             }
         }
-        
+
         echo "<td>" . $row["startDate"] . "</td>"
         . "<td>" . $row["endDate"] . "</td>"
         . "<td>" . $row["workingDays"] . "</td>";
+
+        if ($row["BasicSalary"] != NULL){
+            echo "<td>" . $row["BasicSalary"] . "</td>";
+            $totalSalary+= $row["BasicSalary"];
+        }
+        else
+            echo "<td> 0.00 </td>";
+
+        if ($row["variableSalary"] != NULL){
+            echo "<td>" . $row["variableSalary"] . "</td>";
+            $totalSalary+= $row["variableSalary"];
+        }
         
-        if($row["BasicSalary"] != NULL )                
-        echo  "<td>" . $row["BasicSalary"] . "</td>";
-        else echo  "<td> 0.00 </td>";
-        
-          if($row["variableSalary"] != NULL)                
-        echo  "<td>" . $row["variableSalary"] . "</td>";
-        else echo "<td> 0.00 </td>";
-        
-        
-          if($row["leaveCount"] != NULL)                
-        echo "<td>" . $row["leaveCount"] . "</td>";
-        else echo "<td> 0 </td></tr>";
-        
-       
+        else
+            echo "<td> 0.00 </td>";
+
+
+        if ($row["leaveCount"] != NULL)
+            echo "<td>" . $row["leaveCount"] . "</td>";
+        else
+            echo "<td> 0 </td></tr>";
     }
+    echo "<tr><td>SCR</td>"
+    . "<td>" . $_SESSION["employerNo"] . "</td>"
+    . "<td>" . $_SESSION["employerRouting"] . "</td>"
+    . "<td>" . date("Y-m-d") . "</td>"
+    . "<td>" . date('Hi') . "</td>"
+            . "<td>".$_SESSION['salaryDate']."</td>"
+                . "<td>" . $edrCount . "</td>"
+            . "<td>" . $totalSalary . "</td>"
+            . "<td>AED</td>"
+            . "<td>Salary</td>";
+
     echo "</tbody>";
 } else {
 
@@ -140,6 +160,6 @@ if ($result->num_rows > 0) {
     . "</div>";
 }
 $conn->close();
-
+$_SESSION['salaryDate'] = '';
 
 

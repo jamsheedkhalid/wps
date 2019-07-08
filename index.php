@@ -17,6 +17,7 @@ session_start();
         <script src="js/bootstrap-datetimepicker.min.js"></script>
         <script src="plugins/bootstrap/js/bootstrap.js"></script>
         <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/html2CSV.js" ></script>
 
         <link rel="stylesheet" href="css/style.css">
         <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -72,9 +73,18 @@ session_start();
                             <div class="col-sm-3">
 
                                 <div class="form-group">
-                                    <label>IBAN No.</label>
-                                    <input  class="form-control" name="employerBankNo" id="employerBankNo" placeholder="Enter IBAN number">
-                                    <small  class="form-text text-muted">Enter your 13 digit school IBAN number.</small>
+                                    <label>Employer Unique No.</label>
+                                    <input  class="form-control" name="employerBankNo" id="employerBankNo" placeholder="Enter unique number">
+                                    <small  class="form-text text-muted">Enter your 13 digit school unique number.</small>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+
+                                <div class="form-group">
+                                    <label>Employer Bank Routing Code.</label>
+                                    <input  class="form-control" name="employerRouting" id="employerRouting" placeholder="Enter routing code">
+                                    <small  class="form-text text-muted">Enter your 9 digit school bank routing code.</small>
                                 </div>
                             </div>
 
@@ -96,7 +106,7 @@ session_start();
                                 </div>
                             </div>
 
-                            <div class="col-sm-6" style="margin-top: 25px" >
+                            <div class="col-sm-3" style="margin-top: 25px" >
                                 <button  type="submit" style="margin-left: 20px" name='submitSalary'id="submitSalary" class="btn btn-success mb-2">Load Payslips</button>
 
                             </div>
@@ -111,32 +121,54 @@ session_start();
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
-                                <div class="col-sm-6">
-                                    <h4 class="card-title" style="text-align: left;  font-weight: bold; color: maroon">
+                                <div class="col-sm-12">
+                                    <h4 class="card-title" style="text-align: center; float: center;  font-weight: bold; color: maroon">
                                         <?php
-                                        if (isset($_POST['submitSalary'])) {
+                                        if (isset($_POST['submitSalary']) && $_POST['salaryDate'] != '') {
                                             echo "Salary Payment For the Month: " . $_POST['salaryDate'];
                                             $_SESSION['salaryDate'] = $_POST['salaryDate'];
                                         } else
                                             echo "Approved Payslips";
                                         ?> 
-                                        <br> </h4> <br>
+                                    </h4> 
                                 </div>
-                                <h4 class="card-title" style="text-align: right;  font-weight: bold; color: maroon">
+                                <div style="padding: 20px">
+                                <h4 class="card-title" style="text-align: right; float: right;  font-weight: bold; color: maroon">
                                     <?php
                                     if (isset($_POST['submitSalary']) && $_POST['employerBankNo'] != '') {
                                         echo "Employer IBAN: " . $_POST['employerBankNo'];
+                                        $_SESSION["employerNo"] = $_POST['employerBankNo'];
                                     }
-                                    ?>  <br> </h4> <br>
-                                 <div style="overflow-x:auto;">       
-                                <table class="table table-striped  table-hover table-sm" id='payslips'>
+                                    ?> 
 
-                                </table>
-                                 </div>
+                                </h4> 
+
+                                <h4 class="card-title" style="text-align: left; float: left; font-weight: bold; color: maroon">
+                                    <?php
+                                    if (isset($_POST['submitSalary']) && $_POST['employerRouting'] != '') {
+                                        echo "Rounting Code: " . $_POST['employerRouting'];
+                                        $_SESSION["employerRouting"] = $_POST['employerRouting'];
+                                    }
+                                    ?> 
+
+                                </h4> 
+                                </div>
+
+
+                                <div  class="col-sm-12"style="overflow-x:auto; padding-top: 20px">       
+                                    <table class="table table-striped  table-hover table-sm" id='payslips'></table>
+
+                                </div>
+
                             </div>
-                        </div>
+                        </div>                        
+                        <input value="View SIF" class="btn btn-success mb-2" type="button" onclick="$('#payslipsSIF').table2CSV({header: ['']})">
+                       <table class="table" style="visibility: hidden" id='payslipsSIF'></table>
+
                     </div>
+
                 </div>
+
             </div>
         </div>
 
@@ -152,6 +184,14 @@ session_start();
             };
             xmlhttp.open("POST", "sql/payslips.php", false);
             xmlhttp.send();
+
+            var sifhtttp = new XMLHttpRequest();
+            sifhtttp.onreadystatechange = function () {
+                if (this.readyState === 4)
+                    document.getElementById("payslipsSIF").innerHTML = this.responseText;
+            };
+            sifhtttp.open("POST", "sql/payslipsSIF.php", false);
+            sifhtttp.send();
 
         </script>
 
