@@ -18,6 +18,10 @@ session_start();
         <script src="plugins/bootstrap/js/bootstrap.js"></script>
         <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/html2CSV.js" ></script>
+<!--        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"  rossorigin="anonymous"></script>-->
+        <script src="js/jquery.tabletocsv.js"></script>
+
+
 
         <link rel="stylesheet" href="css/style.css">
         <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -162,8 +166,9 @@ session_start();
 
                             </div>
                         </div>                        
-                        <input value="View SIF" class="btn btn-success mb-2" type="button" onclick="$('#payslipsSIF').table2CSV({header: ['']})">
-                       <table class="table" style="visibility: hidden" id='payslipsSIF'></table>
+                        <input value="View SIF" class="btn btn-primary mb-2" type="button" onclick="$('#payslipsSIF').table2CSV({header: ['']});">
+                        <input value="Download SIF" class="btn btn-primary mb-2" type="button" onclick=" $('#payslipsSIF').tableToCsv({outputheaders: false , fileName: 'salary' });">
+                        <table class="table" style="visibility: hidden" id='payslipsSIF'></table>
 
                     </div>
 
@@ -175,7 +180,8 @@ session_start();
 
         <!-------------------------------------java scripts------------------------------------>
         <script type="text/javascript">
-
+            employerUnique =  document.getElementById("employerBankNo").value;  
+            
             var salaryDate = document.getElementById("salaryDate").value;
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function () {
@@ -219,6 +225,10 @@ session_start();
         </script>
 
         <script>
+            
+
+ 
+            
             var input = document.getElementById("salaryDate");
             input.addEventListener("keyup", function (event) {
                 if (event.keyCode === 13) {
@@ -227,6 +237,7 @@ session_start();
                 }
             });
         </script>
+        
         <!-------------------------------End of Java Scripts------------------------------------>        
 
     </body>
