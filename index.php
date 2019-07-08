@@ -1,6 +1,7 @@
 
 <?php
 session_start();
+date_default_timezone_set('Asia/Dubai');
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +11,7 @@ session_start();
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <!--<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>-->
         <script src="js/menuTrigger.js"></script>
         <script src="js/jquery.min.js"></script>
         <script src="js/moment.min.js"></script>
@@ -167,7 +168,7 @@ session_start();
                             </div>
                         </div>                        
                         <input value="View SIF" class="btn btn-primary mb-2" type="button" onclick="$('#payslipsSIF').table2CSV({header: ['']});">
-                        <input value="Download SIF" class="btn btn-primary mb-2" type="button" onclick=" $('#payslipsSIF').tableToCsv({outputheaders: false , fileName: 'salary' });">
+                        <input value="Download SIF" class="btn btn-primary mb-2" type="button" onclick=" $('#payslipsSIF').tableToCsv({outputheaders: false , fileName: '<?php echo $_SESSION['employerNo'] . date('ymdHis'); ?>' });">
                         <table class="table" style="visibility: hidden" id='payslipsSIF'></table>
 
                     </div>

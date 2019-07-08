@@ -69,8 +69,8 @@ if ($result->num_rows > 0) {
     echo "  <thead class=thead-dark ><tr>
                                             <th scope=col>ID</th>
                                             <th scope=col>Name</th>
-                                            <th scope=col>Emp. ID</th>
-                                            <th scope=col>Routing No.</th>
+                                            <th scope=col>Employee Unique Number</th>
+                                            <th scope=col>Agent ID</th>
                                             <th scope=col>Employee Account</th>
                                             <th scope=col>Pay Start Date</th>
                                             <th scope=col>Pay End Date</th>
