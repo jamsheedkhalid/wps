@@ -27,18 +27,18 @@ $sql = "SELECT
     employee_payslips.total_deductions deductions,
     payslips_date_ranges.start_date startDate,
     payslips_date_ranges.end_date endDate,
-    (
+    ROUND((
         employee_payslip_categories.amount -(
             employee_payslips.total_deductions / 2
         )
-    ) BasicSalary,
-    (
+    ),2) BasicSalary,
+    ROUND((
         (
             employee_payslips.total_earnings - employee_payslip_categories.amount
         ) -(
             employee_payslips.total_deductions / 2
         )
-    ) variableSalary,
+    ),2) variableSalary,
     payroll_categories.name payrollCategory
 FROM
     employees
@@ -66,7 +66,7 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
 
 
-    echo "  <thead><tr>
+    echo "  <thead class=thead-dark ><tr>
                                             <th scope=col>ID</th>
                                             <th scope=col>Name</th>
                                             <th scope=col>Emp. ID</th>
@@ -111,12 +111,25 @@ if ($result->num_rows > 0) {
                 echo "<td>" . $rowID["IBAN"] . "</td>";
             }
         }
+        
         echo "<td>" . $row["startDate"] . "</td>"
         . "<td>" . $row["endDate"] . "</td>"
-        . "<td>" . $row["workingDays"] . "</td>"
-        . "<td>" . $row["BasicSalary"] . "</td>"
-        . "<td>" . $row["variableSalary"] . "</td>"
-        . "<td>" . $row["leaveCount"] . "</td></tr>";
+        . "<td>" . $row["workingDays"] . "</td>";
+        
+        if($row["BasicSalary"] != NULL )                
+        echo  "<td>" . $row["BasicSalary"] . "</td>";
+        else echo  "<td> 0.00 </td>";
+        
+          if($row["variableSalary"] != NULL)                
+        echo  "<td>" . $row["variableSalary"] . "</td>";
+        else echo "<td> 0.00 </td>";
+        
+        
+          if($row["leaveCount"] != NULL)                
+        echo "<td>" . $row["leaveCount"] . "</td>";
+        else echo "<td> 0 </td>";
+        
+       
     }
     echo "</tbody>";
 } else {
