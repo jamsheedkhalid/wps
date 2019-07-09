@@ -5,7 +5,7 @@ date_default_timezone_set('Asia/Dubai');
 
 session_start();
 
-if (($_SESSION['salaryDate']) != '') {
+if (isset($_SESSION['salaryDate']) && ($_SESSION['salaryDate']) != '') {
     $salaryDate = $_SESSION['salaryDate'];
     $salaryDate = explode('/', $salaryDate);
     $_SESSION['salaryDate'] = $salaryDate[0] . $salaryDate[1];

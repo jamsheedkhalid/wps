@@ -10,12 +10,12 @@ include('header.php');
 
         <div class="container-fluid" >
             <div class="row" style="padding: 20px">  
-                <form method="post" action="" >   
+                <form id="formPayslip" method="post" action="" >   
                     <div class="container">
                         <div class="col-sm-3">
 
                             <div class="form-group">
-                                <label>Employer Unique No.</label>
+                                <label for="employerBankNo"> Employer Unique No.</label>
                                 <input  class="form-control"  name="employerBankNo" id="employerBankNo" placeholder="Enter unique number">
                                 <small  class="form-text text-muted">Enter your 13 digit school unique number.</small>
                             </div>
@@ -24,8 +24,8 @@ include('header.php');
                         <div class="col-sm-3">
 
                             <div class="form-group">
-                                <label>Employer Bank Routing Code.</label>
-                                <input  class="form-control" name="employerRouting" id="employerRouting" placeholder="Enter routing code">
+                                <label for="employerRouting">Employer Bank Routing Code.</label>
+                                <input  size="13" class="form-control" name="employerRouting" id="employerRouting" placeholder="Enter routing code">
                                 <small  class="form-text text-muted">Enter your 9 digit school bank routing code.</small>
                             </div>
                         </div>
@@ -33,12 +33,12 @@ include('header.php');
                         <div class="col-sm-3" >
 
 
-                            <div class="form-group">
-                                <label>Month & Year</label>
-                                <div class='input-group date' id="divSalaryDate" >
-                                    <input type='text' name='salaryDate'  id='salaryDate' placeholder="Select month & year" class="form-control" />
+                            <div class="form-group"  >
+                                <label for="salaryDate" >Month & Year</label>
+                                <div class='input-group date'  id="divSalaryDate" >
+                                    <input  type='text' name='salaryDate'  id='salaryDate' placeholder="Select month & year" class="form-control" />
 
-                                    <span class="input-group-addon">
+                                    <span  class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar">
                                         </span>
                                     </span>
@@ -55,10 +55,7 @@ include('header.php');
 
 
                     </div>
-<!--                                            <div style="float: right" >
-<iframe src="http://free.timeanddate.com/clock/i6ua3k0i/n776/tlae/fn6/fs16/fcfff/tc000/pct/ftb/pa4/tt0/th2/tb4" frameborder="0" width="258" height="48" allowTransparency="true"></iframe>
 
-                </div>-->
                 </form>
             </div>
 
@@ -126,7 +123,7 @@ include('header.php');
     <script type="text/javascript">
         
         document.getElementById("navSifCreator").classList.add('active');
-
+        
         var salaryDate = document.getElementById("salaryDate").value;
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function () {
@@ -204,6 +201,21 @@ include('header.php');
             }
         });
     </script>
+    
+    <script  type="text/javascript">
+ var frmvalidator = new Validator("formPayslip");
+ frmvalidator.addValidation("employerBankNo","maxlen=13","Maximum length for Employer Unique Number  is 13");
+  frmvalidator.addValidation("employerBankNo","num","Only digits are allowed in Employer Unique Number");
+
+ 
+ frmvalidator.addValidation("employerRouting","maxlen=9","Maximum length for Bank Routing Code  is 9");
+ frmvalidator.addValidation("employerRouting","num","Only digits are allowed in Bank Routing Code");
+
+// frmvalidator.addValidation("salaryDate","regexp=^(0-1)?([0-9]){1}(\/)(0-9){5}$","Invalid Date Format! Use MM/YYYY ");
+
+
+</script>
+
 
     <!-------------------------------End of Java Scripts------------------------------------>        
 

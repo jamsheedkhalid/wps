@@ -20,6 +20,7 @@ date_default_timezone_set('Asia/Dubai');
         <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
         <script src="js/html2CSV.js" ></script>
         <script src="js/jquery.tabletocsv.js"></script>
+        <script src="js/gen_validatorv4.js"></script>
 
 
         <link href='https://fonts.googleapis.com/css?family=Acme' rel='stylesheet'>

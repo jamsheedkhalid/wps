@@ -77,6 +77,7 @@ if ($result->num_rows > 0) {
                                             <th scope=col>Days Paid</th>
                                             <th scope=col>Fixed Salary</th>  
                                             <th scope=col>Variable Salary</th>
+                                            <th scope=col>Deduction</th>
                                             <th scope=col>Days on Leave</th>
                                         </tr>
                                     </thead>
@@ -126,6 +127,7 @@ if ($result->num_rows > 0) {
         else
             echo "<td> 0.00 </td>";
 
+        echo "<td>" . $row["deductions"] . "</td>";
 
         if ($row["leaveCount"] != NULL)
             echo "<td>" . $row["leaveCount"] . "</td>";
@@ -133,7 +135,6 @@ if ($result->num_rows > 0) {
             echo "<td> 0 </td></tr>";
     }
     echo "</tbody>";
-    
 } else {
 
     echo "<div class=alert alert-success>"
