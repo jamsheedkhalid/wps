@@ -9,7 +9,7 @@ date_default_timezone_set('Asia/Dubai');
     <head>
         <title>WPS-InDepth</title>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <!--        <script src="js/menuTrigger.js"></script>-->
         <script src="js/jquery.min.js"></script>
@@ -34,5 +34,10 @@ date_default_timezone_set('Asia/Dubai');
             #navWpsIndepth {
              font-family: 'Barrio';font-size: 22px;
             }
+            
+            @media(max-width:992px) {
+            #timeBar {
+              visibility: hidden;
+    }}
         </style>
     </head>

@@ -48,12 +48,17 @@ include('header.php');
                             </div>
                         </div>
 
-                        <div class="col-sm-3" style="margin-top: 25px" >
+                        <div class="col-sm-2" style="margin-top: 25px;" >
                             <button  type="submit" style="margin-left: 20px" name='submitSalary'id="submitSalary" class="btn btn-success mb-2">Load Payslips</button>
 
                         </div>
 
+
                     </div>
+<!--                                            <div style="float: right" >
+<iframe src="http://free.timeanddate.com/clock/i6ua3k0i/n776/tlae/fn6/fs16/fcfff/tc000/pct/ftb/pa4/tt0/th2/tb4" frameborder="0" width="258" height="48" allowTransparency="true"></iframe>
+
+                </div>-->
                 </form>
             </div>
 
