@@ -49,7 +49,7 @@ include('header.php');
                         </div>
 
                         <div class="col-sm-2" style="margin-top: 25px;" >
-                            <button  type="submit" style="margin-left: 20px" name='submitSalary'id="submitSalary" class="btn btn-success mb-2">Load Payslips</button>
+                            <button  href="#payslips" type="submit" style="margin-left: 20px" name='submitSalary'id="submitSalary" class="btn btn-success mb-2">Load Payslips</button>
 
                         </div>
 
@@ -110,8 +110,8 @@ include('header.php');
                         </div>
                     </div>
 
-                    <input value="View SIF" class="btn btn-primary mb-2" type="button" onclick="$('#payslipsSIF').table2CSV({header: ['']});">
-                    <input value="Download SIF" class="btn btn-primary mb-2" type="button" onclick=" $('#payslipsSIF').tableToCsv({outputheaders: false, fileName: '<?php echo $_SESSION['employerNo'] . date('ymdHis'); ?>'});">
+                    <input id="viewSIF" value="Generate SIF" class="btn btn-primary mb-2" type="button" >
+                    <input id="downloadSIF" value="Download SIF" class="btn btn-primary mb-2" type="button" style="visibility: hidden" onclick="$('#payslipsSIF').tableToCsv({outputheaders: false, fileName: '<?php echo $_SESSION['employerNo'] . date('ymdHis'); ?>'});">
                     <table class="table" style="visibility: hidden" id='payslipsSIF'></table>
 
                 </div>
@@ -153,20 +153,38 @@ include('header.php');
 
     <script type="text/javascript">
 
-//            $(document).ready(function () {
-//                $("#submitSalary").click(function () {
-//                    
-//
-//                    // disable button
-//                    $(this).prop("disabled", true);
-//                    // add spinner to button
+
+            $(document).ready(function () {
+
+                
+                    $("#viewSIF").click(function () {
+                        
+                                  $(this).prop("disabled", true);
+                    // add spinner to button
 //                    $(this).html(
 //                            `Fetching...  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
 //                            );
-//
-//
-//                });
-//            });
+                    document.getElementById("viewSIF").classList.add('btn-danger');
+
+
+                    var $employerNo = "<?php if(isset($_SESSION['employerNo']) && $_SESSION['employerNo'] != '' ) echo $_SESSION['employerNo']; else echo ""; ?>";
+                    var $employerRouting = "<?php if(isset($_SESSION['employerRouting']) && $_SESSION['employerRouting'] != '' ) echo $_SESSION['employerRouting']; else echo ""; ?>";
+                    var $salaryDate = "<?php if(isset($_SESSION['salaryDate']) && $_SESSION['salaryDate'] != '' ) echo $_SESSION['salaryDate']; else echo ""; ?>";
+                   
+                    if($employerNo === "")
+                        alert("Please Enter Employer Unique Number and reload payslips");
+                    else if ($employerRouting === "")
+                        alert("Please Enter Bank Routing code and reload payslips");
+                   else if ($salaryDate === "")
+                       alert("Please Enter Month & Year of Salary payment and reload payslips");
+
+                    else   { 
+                        $('#payslipsSIF').table2CSV({header: ['']});
+                        document.getElementById("downloadSIF").style.visibility = "visible";
+                    }
+                        
+                });
+            });
 
 
         $(function () {
@@ -178,10 +196,6 @@ include('header.php');
     </script>
 
     <script>
-
-
-
-
         var input = document.getElementById("salaryDate");
         input.addEventListener("keyup", function (event) {
             if (event.keyCode === 13) {

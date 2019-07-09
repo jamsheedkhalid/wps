@@ -12,6 +12,7 @@ date_default_timezone_set('Asia/Dubai');
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <!--        <script src="js/menuTrigger.js"></script>-->
+        <script src="js/jquery.js"></script>
         <script src="js/jquery.min.js"></script>
         <script src="js/moment.min.js"></script>
         <script src="js/bootstrap-datetimepicker.min.js"></script>

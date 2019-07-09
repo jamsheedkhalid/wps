@@ -4,7 +4,7 @@ include('../config/dbConfig.php');
 
 session_start();
 
-if (($_SESSION['salaryDate']) != '') {
+if (isset($_SESSION['salaryDate']) && ($_SESSION['salaryDate']) != '') {
     $salaryDate = $_SESSION['salaryDate'];
     $salaryDate = explode('/', $salaryDate);
     $salaryDate = $salaryDate[1] . '-' . $salaryDate[0] . '-01';
