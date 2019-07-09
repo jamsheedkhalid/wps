@@ -87,7 +87,7 @@ if ($result->num_rows > 0) {
 
     while ($row = $result->fetch_assoc()) {
         echo "<tr><td>" . $row["empID"] . "</td>"
-        . "<td>" . $row["first_name"] ." ". $row["middle_name"] ." ".  $row["last_name"] . "</td>";
+        . "<td>" . $row["first_name"] . " " . $row["middle_name"] . " " . $row["last_name"] . "</td>";
 
         $sqlID = "SELECT additional_info employee_account from employee_additional_details WHERE additional_field_id = 1 and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
@@ -111,27 +111,29 @@ if ($result->num_rows > 0) {
                 echo "<td>" . $rowID["IBAN"] . "</td>";
             }
         }
-        
+
         echo "<td>" . $row["startDate"] . "</td>"
         . "<td>" . $row["endDate"] . "</td>"
         . "<td>" . $row["workingDays"] . "</td>";
-        
-        if($row["BasicSalary"] != NULL )                
-        echo  "<td>" . $row["BasicSalary"] . "</td>";
-        else echo  "<td> 0.00 </td>";
-        
-          if($row["variableSalary"] != NULL)                
-        echo  "<td>" . $row["variableSalary"] . "</td>";
-        else echo "<td> 0.00 </td>";
-        
-        
-          if($row["leaveCount"] != NULL)                
-        echo "<td>" . $row["leaveCount"] . "</td>";
-        else echo "<td> 0 </td></tr>";
-        
-       
+
+        if ($row["BasicSalary"] != NULL)
+            echo "<td>" . $row["BasicSalary"] . "</td>";
+        else
+            echo "<td> 0.00 </td>";
+
+        if ($row["variableSalary"] != NULL)
+            echo "<td>" . $row["variableSalary"] . "</td>";
+        else
+            echo "<td> 0.00 </td>";
+
+
+        if ($row["leaveCount"] != NULL)
+            echo "<td>" . $row["leaveCount"] . "</td>";
+        else
+            echo "<td> 0 </td></tr>";
     }
     echo "</tbody>";
+    
 } else {
 
     echo "<div class=alert alert-success>"

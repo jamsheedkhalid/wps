@@ -1,7 +1,7 @@
 <?php
 
 include('../config/dbConfig.php');
-date_default_timezone_set('Asia/Dubai'); 
+date_default_timezone_set('Asia/Dubai');
 
 session_start();
 
@@ -119,19 +119,16 @@ if ($result->num_rows > 0) {
         . "<td>" . $row["endDate"] . "</td>"
         . "<td>" . $row["workingDays"] . "</td>";
 
-        if ($row["BasicSalary"] != NULL){
+        if ($row["BasicSalary"] != NULL) {
             echo "<td>" . $row["BasicSalary"] . "</td>";
-            $totalSalary+= $row["BasicSalary"];
-        }
-        else
+            $totalSalary += $row["BasicSalary"];
+        } else
             echo "<td> 0.00 </td>";
 
-        if ($row["variableSalary"] != NULL){
+        if ($row["variableSalary"] != NULL) {
             echo "<td>" . $row["variableSalary"] . "</td>";
-            $totalSalary+= $row["variableSalary"];
-        }
-        
-        else
+            $totalSalary += $row["variableSalary"];
+        } else
             echo "<td> 0.00 </td>";
 
 
@@ -145,11 +142,11 @@ if ($result->num_rows > 0) {
     . "<td>" . $_SESSION["employerRouting"] . "</td>"
     . "<td>" . date("Y-m-d") . "</td>"
     . "<td>" . date('Hi') . "</td>"
-            . "<td>".$_SESSION['salaryDate']."</td>"
-                . "<td>" . $edrCount . "</td>"
-            . "<td>" . $totalSalary . "</td>"
-            . "<td>AED</td>"
-            . "<td>Salary</td>";
+    . "<td>" . $_SESSION['salaryDate'] . "</td>"
+    . "<td>" . $edrCount . "</td>"
+    . "<td>" . $totalSalary . "</td>"
+    . "<td>AED</td>"
+    . "<td>Salary</td>";
 
     echo "</tbody>";
 } else {
