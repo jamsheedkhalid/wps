@@ -6,7 +6,7 @@
     </button>
 
     <div id="timeBar" class="col-md-2 col-md-offset-2">
-<iframe src="http://free.timeanddate.com/clock/i6ua3k0i/n776/tlae/fn6/fcfff/tct/pct/ftb/bas2/bat8/bacfff/pa4/tt0/th2/tb4" frameborder="0" width="231" height="46" allowTransparency="true"></iframe>
+        <iframe src="http://free.timeanddate.com/clock/i6ua3k0i/n776/tlae/fn6/fs16/fcfff/tct/pct/ftb/pa8/tt0/th2/tb4" frameborder="0" width="266" height="56" allowTransparency="true"></iframe>
     </div>
     <div class="collapse navbar-collapse" id="navbarText">
 

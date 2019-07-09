@@ -179,7 +179,7 @@ include('header.php');
                        alert("Please Enter Month & Year of Salary payment and reload payslips");
 
                     else   { 
-                        $('#payslipsSIF').table2CSV({header: ['']});
+//                        $('#payslipsSIF').table2CSV({header: ['']});
                         document.getElementById("downloadSIF").style.visibility = "visible";
                     }
                         
