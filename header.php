@@ -1,6 +1,5 @@
 
 <?php
-session_start();
 date_default_timezone_set('Asia/Dubai');
 ?>
 
@@ -21,25 +20,26 @@ date_default_timezone_set('Asia/Dubai');
         <script src="js/html2CSV.js" ></script>
         <script src="js/jquery.tabletocsv.js"></script>
         <script src="js/gen_validatorv4.js"></script>
-
+        <script src="js/autoFill.js"></script>
 
         <link href='https://fonts.googleapis.com/css?family=Acme' rel='stylesheet'>
         <link rel="stylesheet" href="css/style.css">
         <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
-        
+
         <style>
             body {
                 font-family: 'Arvo'; 
             }
             #navWpsIndepth {
-             font-family: 'Barrio';font-size: 22px;
+                font-family: 'Barrio';font-size: 22px;
             }
-            
+
             @media(max-width:992px) {
-            #timeBar {
-              visibility: hidden;
-    }}
+                #timeBar {
+                    visibility: hidden;
+                }}
+
         </style>
     </head>

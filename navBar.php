@@ -17,7 +17,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">EMPLOYEE LISTS</a>
+                <a id='navEmployees' class="nav-link" href="employees.php">EMPLOYEE LISTS</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">PAYSLIPS</a>

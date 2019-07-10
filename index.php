@@ -1,5 +1,6 @@
 <?php
 include('header.php');
+session_start();
 ?>
 
 <body>
@@ -100,7 +101,7 @@ include('header.php');
 
 
                             <div  class="col-sm-12"style="overflow-x:auto; padding-top: 20px">       
-                                <table class="table table-striped  table-hover table-sm" id='payslips'></table>
+                                <table class="table table-striped  table-bordered  table-hover table-sm" id='payslips'></table>
 
                             </div>
 
@@ -202,7 +203,7 @@ include('header.php');
         });
     </script>
     
-    <script  type="text/javascript">
+        <script >
  var frmvalidator = new Validator("formPayslip");
  frmvalidator.addValidation("employerBankNo","maxlen=13","Maximum length for Employer Unique Number  is 13");
   frmvalidator.addValidation("employerBankNo","num","Only digits are allowed in Employer Unique Number");
@@ -211,13 +212,15 @@ include('header.php');
  frmvalidator.addValidation("employerRouting","maxlen=9","Maximum length for Bank Routing Code  is 9");
  frmvalidator.addValidation("employerRouting","num","Only digits are allowed in Bank Routing Code");
 
-// frmvalidator.addValidation("salaryDate","regexp=^(0-1)?([0-9]){1}(\/)(0-9){5}$","Invalid Date Format! Use MM/YYYY ");
+ frmvalidator.addValidation("salaryDate","regexp=((0-1)?([0-9]){1}\/([0-9]){4})","Invalid Date Format! Use MM/YYYY ");
 
 
 </script>
+
 
 
     <!-------------------------------End of Java Scripts------------------------------------>        
 
 </body>
 </html>
+
