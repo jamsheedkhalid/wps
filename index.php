@@ -3,224 +3,174 @@ include('header.php');
 session_start();
 ?>
 
-<body>
-    <div  class="animate">
-        <?php
-        include('navBar.php');
-        ?>
 
-        <div class="container-fluid" >
-            <div class="row" style="padding: 20px">  
-                <form id="formPayslip" method="post" action="" >   
-                    <div class="container">
-                        <div class="col-sm-3">
-
-                            <div class="form-group">
-                                <label for="employerBankNo"> Employer Unique No.</label>
-                                <input  class="form-control"  name="employerBankNo" id="employerBankNo" placeholder="Enter unique number">
-                                <small  class="form-text text-muted">Enter your 13 digit school unique number.</small>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-3">
-
-                            <div class="form-group">
-                                <label for="employerRouting">Employer Bank Routing Code.</label>
-                                <input  size="13" class="form-control" name="employerRouting" id="employerRouting" placeholder="Enter routing code">
-                                <small  class="form-text text-muted">Enter your 9 digit school bank routing code.</small>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-3" >
-
-
-                            <div class="form-group"  >
-                                <label for="salaryDate" >Month & Year</label>
-                                <div class='input-group date'  id="divSalaryDate" >
-                                    <input  type='text' name='salaryDate'  id='salaryDate' placeholder="Select month & year" class="form-control" />
-
-                                    <span  class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar">
-                                        </span>
-                                    </span>
-
-                                </div>
-                                <small class="form-text text-muted">Select month & year of salary payment.</small>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-2" style="margin-top: 25px;" >
-                            <button  href="#payslips" type="submit" style="margin-left: 20px" name='submitSalary'id="submitSalary" class="btn btn-success mb-2">Load Payslips</button>
-
-                        </div>
-
-
-                    </div>
-
-                </form>
-            </div>
-
-
-
-            <div class="row" style="padding: 20px">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="col-sm-12">
-                                <h4 class="card-title" style="text-align: center; float: center;  font-weight: bold; color: maroon">
-                                    <?php
-                                    if (isset($_POST['submitSalary']) && $_POST['salaryDate'] != '') {
-                                        echo "Salary Payment For the Month: " . $_POST['salaryDate'];
-                                        $_SESSION['salaryDate'] = $_POST['salaryDate'];
-                                    } else
-                                        echo "<u>Approved Payslips</u>";
-                                    ?> 
-                                </h4> 
-                            </div>
-                            <div style="padding: 20px">
-                                <h4 class="card-title" style="text-align: right; float: right;  font-weight: bold; color: maroon">
-                                    <?php
-                                    if (isset($_POST['submitSalary']) && $_POST['employerBankNo'] != '') {
-                                        echo "Employer No.: " . $_POST['employerBankNo'];
-                                        $_SESSION["employerNo"] = $_POST['employerBankNo'];
-                                    }
-                                    ?> 
-
-                                </h4> 
-
-                                <h4 class="card-title" style="text-align: left; float: left; font-weight: bold; color: maroon">
-                                    <?php
-                                    if (isset($_POST['submitSalary']) && $_POST['employerRouting'] != '') {
-                                        echo "Routing Code: " . $_POST['employerRouting'];
-                                        $_SESSION["employerRouting"] = $_POST['employerRouting'];
-                                    }
-                                    ?> 
-
-                                </h4> 
-                            </div>
-
-
-                            <div  class="col-sm-12"style="overflow-x:auto; padding-top: 20px">       
-                                <table class="table table-striped  table-bordered  table-hover table-sm" id='payslips'></table>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <input id="viewSIF" value="Generate SIF" class="btn btn-primary mb-2" type="button" >
-                    <input id="downloadSIF" value="Download SIF" class="btn btn-primary mb-2" type="button" style="visibility: hidden" onclick="$('#payslipsSIF').tableToCsv({outputheaders: false, fileName: '<?php echo $_SESSION['employerNo'] . date('ymdHis'); ?>'});">
-                    <table class="table" style="visibility: hidden" id='payslipsSIF'></table>
-
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-
-
-    <!-------------------------------------java scripts------------------------------------>
-    <script type="text/javascript">
-        
-        document.getElementById("navSifCreator").classList.add('active');
-        
-        var salaryDate = document.getElementById("salaryDate").value;
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState === 4)
-                document.getElementById("payslips").innerHTML = this.responseText;
-        };
-        xmlhttp.open("POST", "sql/payslips.php", false);
-        xmlhttp.send();
-
-        var sifhtttp = new XMLHttpRequest();
-        sifhtttp.onreadystatechange = function () {
-            if (this.readyState === 4)
-                document.getElementById("payslipsSIF").innerHTML = this.responseText;
-        };
-        sifhtttp.open("POST", "sql/payslipsSIF.php", false);
-        sifhtttp.send();
-        
-        document.getElementById("employerBankNo").value = '<?php if(isset($_SESSION["employerNo"])) echo $_SESSION["employerNo"]; ?>';
-        document.getElementById("employerRouting").value = '<?php if(isset($_SESSION["employerRouting"])) echo $_SESSION["employerRouting"]; ?>';
-        document.getElementById("salaryDate").value = '<?php if(isset($_SESSION["salaryDate"])) echo $_SESSION["salaryDate"]; ?>';
-
-
-    </script>
-
-    <script type="text/javascript">
-
-
-            $(document).ready(function () {
-
-                
-                    $("#viewSIF").click(function () {
-                        
-                                  $(this).prop("disabled", true);
-                    // add spinner to button
-//                    $(this).html(
-//                            `Fetching...  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
-//                            );
-                    document.getElementById("viewSIF").classList.add('btn-danger');
-
-
-                    var $employerNo = "<?php if(isset($_SESSION['employerNo']) && $_SESSION['employerNo'] != '' ) echo $_SESSION['employerNo']; else echo ""; ?>";
-                    var $employerRouting = "<?php if(isset($_SESSION['employerRouting']) && $_SESSION['employerRouting'] != '' ) echo $_SESSION['employerRouting']; else echo ""; ?>";
-                    var $salaryDate = "<?php if(isset($_SESSION['salaryDate']) && $_SESSION['salaryDate'] != '' ) echo $_SESSION['salaryDate']; else echo ""; ?>";
-                   
-                    if($employerNo === "")
-                        alert("Please Enter Employer Unique Number and reload payslips");
-                    else if ($employerRouting === "")
-                        alert("Please Enter Bank Routing code and reload payslips");
-                   else if ($salaryDate === "")
-                       alert("Please Enter Month & Year of Salary payment and reload payslips");
-
-                    else   { 
-//                        $('#payslipsSIF').table2CSV({header: ['']});
-                        document.getElementById("downloadSIF").style.visibility = "visible";
-                    }
-                        
-                });
-            });
-
-
+<script>
         $(function () {
-            $('#divSalaryDate').datetimepicker({
-                viewMode: 'years',
-                format: 'MM/YYYY'
+            $("#generate-button").click(function () {
+                var instanceurl = $("#instanceurl").val();
+                var client_id = $("#client_id").val();
+                var client_secret = $("#client_secret").val();
+                var redirect_uri = $("#redirect_uri").val();
+                var username = $("#username").val();
+                var password = $("#password").val();
+                if (username === "" || password === "")
+                    alert("Username or Password can not be empty");
+                else
+                {
+                    var token_input = $("#token");
+                    var result_div = $("#result");
+                    document.getElementById("iurl").value = document.getElementById("instanceurl").value;
+                    generate_token(instanceurl, client_id, client_secret, redirect_uri, username, password, token_input, result_div);
+                }
             });
         });
     </script>
 
     <script>
-        var input = document.getElementById("salaryDate");
-        input.addEventListener("keyup", function (event) {
-            if (event.keyCode === 13) {
-                event.preventDefault();
-                document.getElementById("submitSalary").click();
+        function generate_token(instanceurl, client_id, client_secret, redirect_uri, username, password, token_input, result_div) {
+            token_input.val("");
+            result_div.html("");
+            try
+            {
+                var xmlDoc;
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", instanceurl + "/oauth/token", true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function (e)
+                {
+                    if (xhr.readyState === 4)
+                    {
+                        var a = JSON.parse(e.target.responseText);
+                        token_input.val(a["access_token"]);
+                        if (token_input.val() !== "")
+                        {
+                            alert("Welcome, Login Successful.");
+                            document.getElementById("generate-report").click();
+                        }
+                        result_div.html(show_response(e.target.responseText));
+                        xmlDoc = this.responseText;
+                        txt = "";
+                    }
+                };
+                xhr.send("client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=password&username=" + username + "&password=" + password + "&redirect_uri=" + redirect_uri);
+            } catch (err)
+            {
+                alert(err.message);
             }
+        }
+        ;
+
+        function show_response(str) {
+            str = vkbeautify.xml(str, 4);
+            return str.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br />");
+        }
+        ;
+
+        function validateForm() {
+            var x = document.forms["frm"]["token"].value;
+            if (x === "") {
+                alert("Generate an access token first");
+                return false;
+            }
+        }
+        ;
+    </script>
+
+
+
+<body>
+    
+    <!--API Connecting with Demo--> 
+        <input  id="instanceurl" type="hidden" name="instanceurl" value="http://demo.indepth.ae"/>
+        <input  id="client_id" type="hidden" value="5fd097a24816229cf3052578e4ea61c07c81c8c0ad287d9ec42b458848fa34c5"/>
+        <input  id="client_secret" type="hidden" value="a79cd490f8b429d3bfcd84aeb67da1a25ae3562d82fe4e6acc0e3f6322e8511c"/>
+        <input  id="redirect_uri" type="hidden" value="http://wps.demo.indepth.ae/"/>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
+                <form class="login100-form validate-form flex-sb flex-w" method="POST" action="genera"  >
+                    <span class="login100-form-title p-b-32">
+                        WPS Login
+                    </span>
+
+                    <span class="txt1 p-b-11">
+                        Username
+                    </span>
+                    <div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
+                        <input class="input100" type="text" name="username" id='username' >
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <span class="txt1 p-b-11">
+                        Password
+                    </span>
+                    <div class="wrap-input100 validate-input m-b-12" data-validate = "Password is required">
+                        <span class="btn-show-pass">
+                            <i class="fa fa-eye"></i>
+                        </span>
+                        <input class="input100" type="password" name="password" id='password'>
+                        <span class="focus-input100"></span>
+                    </div>
+
+                    <div class="flex-sb-m w-full p-b-48">
+                        <div class="contact100-form-checkbox">
+                            <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+                            <label class="label-checkbox100" for="ckb1">
+                                Remember me
+                            </label>
+                        </div>
+
+                        <div>
+                            <a href="#" class="txt3">
+                                Forgot Password?
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button type= "submit" id="generate-button"  class="login100-form-btn">
+                            Login
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    
+        <form name="frm" onsubmit="return validateForm()" action="generateSIF.php" method="POST" style="display: none">
+            <input id="token" type="hidden" name="token">
+            <input id="iurl" type="hidden" name="iurl">
+            <input type= "submit" id="generate-report" value ="Generate Reports">
+        </form>
+
+
+    <div id="dropDownSelect1"></div>
+
+    
+    <!--===============================================================================================-->
+    <script src="vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/bootstrap/js/popper.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+    <script src="js/main.js"></script>
+    
+    
+      <script>
+        var input = document.getElementById("password");
+        input.addEventListener("keyup", function (event) {
+            if (event.keyCode === 13)
+                document.getElementById("generate-button").click();
         });
     </script>
     
-        <script >
- var frmvalidator = new Validator("formPayslip");
- frmvalidator.addValidation("employerBankNo","maxlen=13","Maximum length for Employer Unique Number  is 13");
-  frmvalidator.addValidation("employerBankNo","num","Only digits are allowed in Employer Unique Number");
-
- 
- frmvalidator.addValidation("employerRouting","maxlen=9","Maximum length for Bank Routing Code  is 9");
- frmvalidator.addValidation("employerRouting","num","Only digits are allowed in Bank Routing Code");
-
- frmvalidator.addValidation("salaryDate","regexp=((0-1)?([0-9]){1}\/([0-9]){4})","Invalid Date Format! Use MM/YYYY ");
-
-
-</script>
-
-
-
-    <!-------------------------------End of Java Scripts------------------------------------>        
 
 </body>
 </html>
-

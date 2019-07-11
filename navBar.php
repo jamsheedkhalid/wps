@@ -12,7 +12,7 @@
 
         <ul style="float: right; padding-right: 20px" class="navbar-nav ml-md-auto d-md-flex">
             <li id='navSifCreator' class="nav-item">
-                <a class="nav-link" href="index.php">GENERATE SIF
+                <a class="nav-link" href="generateSIF.php">GENERATE SIF
                     <span class="sr-only">(current)</span>
                 </a>
             </li>

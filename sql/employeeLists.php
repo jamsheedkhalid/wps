@@ -82,7 +82,8 @@ if ($result->num_rows > 0) {
         
         else echo "<td style=color:red>-NA- </td>";
         
-        echo "<td>" . $row["joining_date"] . "</td>";
+        
+        echo "<td>" .date("d-M-y", strtotime($row["joining_date"]))  . "</td>";
         
         if ($row["mobile_phone"] != '')
         echo "<td>" . $row["mobile_phone"] . "</td>";

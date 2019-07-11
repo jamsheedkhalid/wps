@@ -33,10 +33,13 @@ if (isset($_POST['submitEmployee']) && $_POST['employeeName'] != '') {
 
 
                         <div class="col-sm-2" style="margin-top: 25px;" >
-                            <button  href="#" type="submit" style="margin-left: 20px" name='submitEmployee' id="submitEmployee" class="btn btn-success mb-2">Load Payslips</button>
+                            <button  href="#" type="submit" style="margin-left: 20px" name='submitEmployee' id="submitEmployee" class="btn btn-success mb-2">Load Employee Details</button>
 
                         </div>
+<div class="col-sm-2" style="margin-top: 25px;" >
+                            <button  href="#" type="reset" style="margin-left: 20px" name='resetEmployee' id="resetEmployee" class="btn btn-danger mb-2">Clear</button>
 
+                        </div>
 
                     </div>
 
@@ -55,7 +58,7 @@ if (isset($_POST['submitEmployee']) && $_POST['employeeName'] != '') {
 
 
                             <div  class="col-sm-12"style="overflow-x:auto; padding-top: 20px">       
-                                <table class="table table-striped table-bordered  table-hover table-sm" id='employees'></table>
+                                <table class="table table-striped  table-bordered  table-hover table-sm" id='employees'></table>
 
                             </div>
 
