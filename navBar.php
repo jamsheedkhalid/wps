@@ -22,6 +22,16 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">PAYSLIPS</a>
             </li>
+       
+         
         </ul>
+              
+         
     </div>
+    <form action="logout.php">
+        <button  type ='submit' href='logout.php' class="btn btn-danger btn-sm">
+          <span class="glyphicon glyphicon-log-out"></span> Log out
+                  </button>
+    </form>
+          
 </nav>

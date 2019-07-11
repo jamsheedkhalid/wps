@@ -1,12 +1,11 @@
 <?php
 include('header.php');
 
-session_start();
 
-if (isset($_POST['submitEmployee']) && $_POST['employeeName'] != '') {
-    $_SESSION["employeeName"] = $_POST['employeeName'];
-} else
-    $_SESSION["employeeName"] = "";
+if (!isset($_SESSION['token'])) {
+    header("Location: index.php"); //redirect to login page to secure the welcome page without login access.  
+    $_SESSION['login'] = 1;
+}
 ?>
 
 <body>
@@ -27,7 +26,7 @@ if (isset($_POST['submitEmployee']) && $_POST['employeeName'] != '') {
                                 <datalist  id="display"></datalist >
                                 <small  class="form-text text-muted">Enter employee name or ID to view details</small>
                             </div>
-                            
+
                         </div>
 
 
@@ -36,7 +35,7 @@ if (isset($_POST['submitEmployee']) && $_POST['employeeName'] != '') {
                             <button  href="#" type="submit" style="margin-left: 20px" name='submitEmployee' id="submitEmployee" class="btn btn-success mb-2">Load Employee Details</button>
 
                         </div>
-<div class="col-sm-2" style="margin-top: 25px;" >
+                        <div class="col-sm-2" style="margin-top: 25px;" >
                             <button  href="#" type="reset" style="margin-left: 20px" name='resetEmployee' id="resetEmployee" class="btn btn-danger mb-2">Clear</button>
 
                         </div>
@@ -53,7 +52,7 @@ if (isset($_POST['submitEmployee']) && $_POST['employeeName'] != '') {
                     <div class="card">
                         <div class="card-body">
                             <div class="col-sm-12">
-                                <h4 class="card-title" style="text-align: center; float: center;  font-weight: bold; color: maroon"><u>Employee Details</u>                                </h4> 
+                                <h4 class="card-title" style="text-align: center; float: center;  font-weight: bold; color: maroon"><u>Employee Details</u></h4> 
                             </div>
 
 
@@ -89,7 +88,7 @@ if (isset($_POST['submitEmployee']) && $_POST['employeeName'] != '') {
         };
         xmlhttp.open("POST", "sql/employeeLists.php", false);
         xmlhttp.send();
-        
+
 
 
 
@@ -106,7 +105,7 @@ if (isset($_POST['submitEmployee']) && $_POST['employeeName'] != '') {
             }
         });
     </script>
-    
+
     <script type="text/javascript" src="js/autoFill.js"></script>
 
 

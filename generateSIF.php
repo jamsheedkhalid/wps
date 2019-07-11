@@ -1,7 +1,15 @@
 <?php
 include('header.php');
-session_start();
+if (!isset($_SESSION['token'])) {
+    header("Location: index.php"); //redirect to login page to secure the welcome page without login access.  
+    $_SESSION['login'] = 1;
+}
 ?>
+
+
+
+
+
 
 <body>
     <div  class="animate">
@@ -53,7 +61,7 @@ session_start();
                             <button  href="#payslips" type="submit" style="margin-left: 20px" name='submitSalary'id="submitSalary" class="btn btn-success mb-2">Load Payslips</button>
 
                         </div>
-<div class="col-sm-1" style="margin-top: 25px; margin-left: 25px;" >
+                        <div class="col-sm-1" style="margin-top: 25px; margin-left: 25px;" >
                             <button  href="#" type="reset" style="margin-left: 20px" name='resetEmployee' id="resetEmployee" class="btn btn-danger mb-2">Clear</button>
 
                         </div>
@@ -125,9 +133,9 @@ session_start();
 
     <!-------------------------------------java scripts------------------------------------>
     <script type="text/javascript">
-        
+
         document.getElementById("navSifCreator").classList.add('active');
-        
+
         var salaryDate = document.getElementById("salaryDate").value;
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function () {
@@ -144,10 +152,10 @@ session_start();
         };
         sifhtttp.open("POST", "sql/payslipsSIF.php", false);
         sifhtttp.send();
-        
-        document.getElementById("employerBankNo").value = '<?php if(isset($_SESSION["employerNo"])) echo $_SESSION["employerNo"]; ?>';
-        document.getElementById("employerRouting").value = '<?php if(isset($_SESSION["employerRouting"])) echo $_SESSION["employerRouting"]; ?>';
-        document.getElementById("salaryDate").value = '<?php if(isset($_SESSION["salaryDate"])) echo $_SESSION["salaryDate"]; ?>';
+
+        document.getElementById("employerBankNo").value = '<?php if (isset($_SESSION["employerNo"])) echo $_SESSION["employerNo"]; ?>';
+        document.getElementById("employerRouting").value = '<?php if (isset($_SESSION["employerRouting"])) echo $_SESSION["employerRouting"]; ?>';
+        document.getElementById("salaryDate").value = '<?php if (isset($_SESSION["salaryDate"])) echo $_SESSION["salaryDate"]; ?>';
 
 
     </script>
@@ -155,37 +163,49 @@ session_start();
     <script type="text/javascript">
 
 
-            $(document).ready(function () {
+        $(document).ready(function () {
 
-                
-                    $("#viewSIF").click(function () {
-                        
-                                  $(this).prop("disabled", true);
-                    // add spinner to button
+
+            $("#viewSIF").click(function () {
+
+                $(this).prop("disabled", true);
+                // add spinner to button
 //                    $(this).html(
 //                            `Fetching...  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
 //                            );
-                    document.getElementById("viewSIF").classList.add('btn-danger');
+                document.getElementById("viewSIF").classList.add('btn-danger');
 
 
-                    var $employerNo = "<?php if(isset($_SESSION['employerNo']) && $_SESSION['employerNo'] != '' ) echo $_SESSION['employerNo']; else echo ""; ?>";
-                    var $employerRouting = "<?php if(isset($_SESSION['employerRouting']) && $_SESSION['employerRouting'] != '' ) echo $_SESSION['employerRouting']; else echo ""; ?>";
-                    var $salaryDate = "<?php if(isset($_SESSION['salaryDate']) && $_SESSION['salaryDate'] != '' ) echo $_SESSION['salaryDate']; else echo ""; ?>";
-                   
-                    if($employerNo === "")
-                        alert("Please Enter Employer Unique Number and reload payslips");
-                    else if ($employerRouting === "")
-                        alert("Please Enter Bank Routing code and reload payslips");
-                   else if ($salaryDate === "")
-                       alert("Please Enter Month & Year of Salary payment and reload payslips");
+                var $employerNo = "<?php if (isset($_SESSION['employerNo']) && $_SESSION['employerNo'] != '')
+                                        echo $_SESSION['employerNo'];
+                                    else
+                                        echo "";
+                                    ?>";
+                var $employerRouting = "<?php if (isset($_SESSION['employerRouting']) && $_SESSION['employerRouting'] != '')
+                                        echo $_SESSION['employerRouting'];
+                                    else
+                                        echo "";
+                                    ?>";
+                var $salaryDate = "<?php if (isset($_SESSION['salaryDate']) && $_SESSION['salaryDate'] != '')
+                                        echo $_SESSION['salaryDate'];
+                                    else
+                                        echo "";
+                                    ?>";
 
-                    else   { 
+                if ($employerNo === "")
+                    alert("Please Enter Employer Unique Number and reload payslips");
+                else if ($employerRouting === "")
+                    alert("Please Enter Bank Routing code and reload payslips");
+                else if ($salaryDate === "")
+                    alert("Please Enter Month & Year of Salary payment and reload payslips");
+
+                else {
 //                        $('#payslipsSIF').table2CSV({header: ['']});
-                        document.getElementById("downloadSIF").style.visibility = "visible";
-                    }
-                        
-                });
+                    document.getElementById("downloadSIF").style.visibility = "visible";
+                }
+
             });
+        });
 
 
         $(function () {
@@ -205,20 +225,20 @@ session_start();
             }
         });
     </script>
-    
-        <script >
- var frmvalidator = new Validator("formPayslip");
- frmvalidator.addValidation("employerBankNo","maxlen=13","Maximum length for Employer Unique Number  is 13");
-  frmvalidator.addValidation("employerBankNo","num","Only digits are allowed in Employer Unique Number");
 
- 
- frmvalidator.addValidation("employerRouting","maxlen=9","Maximum length for Bank Routing Code  is 9");
- frmvalidator.addValidation("employerRouting","num","Only digits are allowed in Bank Routing Code");
-
- frmvalidator.addValidation("salaryDate","regexp=((0-1)?([0-9]){1}\/([0-9]){4})","Invalid Date Format! Use MM/YYYY ");
+    <script >
+        var frmvalidator = new Validator("formPayslip");
+        frmvalidator.addValidation("employerBankNo", "maxlen=13", "Maximum length for Employer Unique Number  is 13");
+        frmvalidator.addValidation("employerBankNo", "num", "Only digits are allowed in Employer Unique Number");
 
 
-</script>
+        frmvalidator.addValidation("employerRouting", "maxlen=9", "Maximum length for Bank Routing Code  is 9");
+        frmvalidator.addValidation("employerRouting", "num", "Only digits are allowed in Bank Routing Code");
+
+        frmvalidator.addValidation("salaryDate", "regexp=((0-1)?([0-9]){1}\/([0-9]){4})", "Invalid Date Format! Use MM/YYYY ");
+
+
+    </script>
 
 
 
@@ -226,4 +246,5 @@ session_start();
 
 </body>
 </html>
+
 

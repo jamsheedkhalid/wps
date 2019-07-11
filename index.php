@@ -1,90 +1,101 @@
 <?php
 include('header.php');
-session_start();
+if (isset($_SESSION['token']))
+    header("Location: generateSIF.php");
 ?>
 
 
+
+
+
 <script>
-        $(function () {
-            $("#generate-button").click(function () {
-                var instanceurl = $("#instanceurl").val();
-                var client_id = $("#client_id").val();
-                var client_secret = $("#client_secret").val();
-                var redirect_uri = $("#redirect_uri").val();
-                var username = $("#username").val();
-                var password = $("#password").val();
-                if (username === "" || password === "")
-                    alert("Username or Password can not be empty");
-                else
-                {
-                    var token_input = $("#token");
-                    var result_div = $("#result");
-                    document.getElementById("iurl").value = document.getElementById("instanceurl").value;
-                    generate_token(instanceurl, client_id, client_secret, redirect_uri, username, password, token_input, result_div);
-                }
-            });
+    $(function () {
+        $("#generate-button").click(function () {
+            var instanceurl = $("#instanceurl").val();
+            var client_id = $("#client_id").val();
+            var client_secret = $("#client_secret").val();
+            var redirect_uri = $("#redirect_uri").val();
+            var username = $("#username").val();
+            var password = $("#password").val();
+            if (username === "" || password === "")
+                alert("Username or Password can not be empty");
+            else
+            {
+                var token_input = $("#token");
+                var result_div = $("#result");
+                document.getElementById("iurl").value = document.getElementById("instanceurl").value;
+                generate_token(instanceurl, client_id, client_secret, redirect_uri, username, password, token_input, result_div);
+            }
         });
-    </script>
+    });
+</script>
 
-    <script>
-        function generate_token(instanceurl, client_id, client_secret, redirect_uri, username, password, token_input, result_div) {
-            token_input.val("");
-            result_div.html("");
-            try
+<script>
+    function generate_token(instanceurl, client_id, client_secret, redirect_uri, username, password, token_input, result_div) {
+        token_input.val("");
+        result_div.html("");
+        try
+        {
+            var xmlDoc;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", instanceurl + "/oauth/token", true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function (e)
             {
-                var xmlDoc;
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", instanceurl + "/oauth/token", true);
-                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhr.onreadystatechange = function (e)
+                if (xhr.readyState === 4)
                 {
-                    if (xhr.readyState === 4)
+                    var a = JSON.parse(e.target.responseText);
+                    token_input.val(a["access_token"]);
+                    if (token_input.val() !== "")
                     {
-                        var a = JSON.parse(e.target.responseText);
-                        token_input.val(a["access_token"]);
-                        if (token_input.val() !== "")
-                        {
-                            alert("Welcome, Login Successful.");
-                            document.getElementById("generate-report").click();
-                        }
-                        result_div.html(show_response(e.target.responseText));
-                        xmlDoc = this.responseText;
-                        txt = "";
-                    }
-                };
-                xhr.send("client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=password&username=" + username + "&password=" + password + "&redirect_uri=" + redirect_uri);
-            } catch (err)
-            {
-                alert(err.message);
-            }
-        }
-        ;
+                        document.getElementById('invalidCredentials').style.display = 'none';
+                        $('#welcome-modal').modal('show');
+                        setTimeout(function () {
+                            $('#welcome-modal').modal('hide');
+                        }, 3000);
+                        document.getElementById("generate-payslip").click();
+                    } else
+                        document.getElementById('invalidCredentials').style.display = 'inline';
 
-        function show_response(str) {
-            str = vkbeautify.xml(str, 4);
-            return str.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br />");
-        }
-        ;
 
-        function validateForm() {
-            var x = document.forms["frm"]["token"].value;
-            if (x === "") {
-                alert("Generate an access token first");
-                return false;
-            }
+                    result_div.html(show_response(e.target.responseText));
+                    xmlDoc = this.responseText;
+                    txt = "";
+                }
+            };
+            xhr.send("client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=password&username=" + username + "&password=" + password + "&redirect_uri=" + redirect_uri);
+        } catch (err)
+        {
+            alert(err.message);
         }
-        ;
-    </script>
+    }
+    ;
+
+    function show_response(str) {
+        str = vkbeautify.xml(str, 4);
+        return str.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br />");
+    }
+    ;
+
+    function validateForm() {
+        var x = document.forms["frm"]["token"].value;
+        if (x === "") {
+            alert("Generate an access token first");
+            return false;
+        }
+    }
+    ;
+</script>
 
 
 
 <body>
-    
+
     <!--API Connecting with Demo--> 
-        <input  id="instanceurl" type="hidden" name="instanceurl" value="http://demo.indepth.ae"/>
-        <input  id="client_id" type="hidden" value="5fd097a24816229cf3052578e4ea61c07c81c8c0ad287d9ec42b458848fa34c5"/>
-        <input  id="client_secret" type="hidden" value="a79cd490f8b429d3bfcd84aeb67da1a25ae3562d82fe4e6acc0e3f6322e8511c"/>
-        <input  id="redirect_uri" type="hidden" value="http://wps.demo.indepth.ae"/>
+    <input  id="instanceurl" type="hidden" name="instanceurl" value="http://demo.indepth.ae"/>
+    <input  id="client_id" type="hidden" value="5fd097a24816229cf3052578e4ea61c07c81c8c0ad287d9ec42b458848fa34c5"/>
+    <input  id="client_secret" type="hidden" value="a79cd490f8b429d3bfcd84aeb67da1a25ae3562d82fe4e6acc0e3f6322e8511c"/>
+    <input  id="redirect_uri" type="hidden" value="http://wps.demo.indepth.ae"/>
 
     <div class="limiter">
         <div class="container-login100">
@@ -93,6 +104,20 @@ session_start();
                     <span class="login100-form-title p-b-32">
                         WPS Login
                     </span>
+
+                    <?php if (isset($_SESSION['login'])) { ?>
+
+                        <div id='loginFirst' class="alert alert-warning wrap-input100  m-b-12">
+                            <strong>Not Logged-in!</strong> Please Login First.
+                        </div>
+
+                        <?php unset($_SESSION['login']);
+                    } ?>   
+
+
+                    <div id='invalidCredentials' class="alert alert-danger wrap-input100  m-b-12" style="display: none;">
+                        <strong>Invalid!</strong> Username/Password is inavlid.
+                    </div>
 
                     <span class="txt1 p-b-11">
                         Username
@@ -138,17 +163,29 @@ session_start();
             </div>
         </div>
     </div>
-    
-        <form name="frm" onsubmit="return validateForm()" action="generateSIF.php" method="POST" style="display: none">
-            <input id="token" type="hidden" name="token">
-            <input id="iurl" type="hidden" name="iurl">
-            <input type= "submit" id="generate-report" value ="Generate Reports">
-        </form>
+
+    <form name="frm" onsubmit="return validateForm()" action="login.php" method="POST" style="display: none">
+        <input id="token" type="hidden" name="token">
+        <input id="iurl" type="hidden" name="iurl">
+       <!--<input id="key" type="hidden" name="key" value='1'>-->
+
+        <input type= "submit" id="generate-payslip" value ="Generate Payslips">
+    </form>
 
 
     <div id="dropDownSelect1"></div>
 
-    
+    <div id="welcome-modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p style="text-align: center"><strong> Successfully Logged in. </strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!--===============================================================================================-->
     <script src="vendor/animsition/js/animsition.min.js"></script>
     <!--===============================================================================================-->
@@ -161,16 +198,16 @@ session_start();
     <script src="vendor/countdowntime/countdowntime.js"></script>
     <!--===============================================================================================-->
     <script src="js/main.js"></script>
-    
-    
-      <script>
+
+
+    <script>
         var input = document.getElementById("password");
         input.addEventListener("keyup", function (event) {
             if (event.keyCode === 13)
                 document.getElementById("generate-button").click();
         });
     </script>
-    
+
 
 </body>
 </html>
