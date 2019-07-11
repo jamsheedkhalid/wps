@@ -84,12 +84,12 @@ session_start();
         <input  id="instanceurl" type="hidden" name="instanceurl" value="http://demo.indepth.ae"/>
         <input  id="client_id" type="hidden" value="5fd097a24816229cf3052578e4ea61c07c81c8c0ad287d9ec42b458848fa34c5"/>
         <input  id="client_secret" type="hidden" value="a79cd490f8b429d3bfcd84aeb67da1a25ae3562d82fe4e6acc0e3f6322e8511c"/>
-        <input  id="redirect_uri" type="hidden" value="http://wps.demo.indepth.ae/"/>
+        <input  id="redirect_uri" type="hidden" value="http://wps.demo.indepth.ae"/>
 
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
-                <form class="login100-form validate-form flex-sb flex-w" method="POST" action="genera"  >
+                <form class="login100-form validate-form flex-sb flex-w"  onsubmit = "event.preventDefault();"  >
                     <span class="login100-form-title p-b-32">
                         WPS Login
                     </span>
