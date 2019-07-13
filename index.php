@@ -2,9 +2,6 @@
 include('header.php');
 if (isset($_SESSION['token']))
     header("Location: generateSIF.php");
-
-
-
 ?>
 
 
@@ -111,18 +108,22 @@ if (isset($_SESSION['token']))
                             <strong>Not Logged-in!</strong> Please Login First.
                         </div>
 
-                        <?php unset($_SESSION['login']);
-                    }  
-                    
-                     if (isset($_SESSION['noaccess'])) { ?>
+                        <?php
+                        unset($_SESSION['login']);
+                    }
+
+                    if (isset($_SESSION['noaccess'])) {
+                        ?>
 
                         <div id='noaccess' class="alert alert-danger wrap-input100  m-b-12">
                             <strong>Unauthorized!</strong> You are unauthorized to use this system. Please contact system administrator.
                         </div>
 
-                        <?php unset($_SESSION['noaccess']);
-                    } ?>  
-                    
+                        <?php
+                        unset($_SESSION['noaccess']);
+                    }
+                    ?>  
+
 
 
                     <div id='invalidCredentials' class="alert alert-danger wrap-input100  m-b-12" style="display: none;">
@@ -156,8 +157,8 @@ if (isset($_SESSION['token']))
                             </label>
                         </div>
 
-                        <div>
-                            <a href="#" class="txt3">
+                        <div >
+                            <a href="#" onclick=" $('#forget_modal').modal('show');" id='forget_password' class="txt3">
                                 Forgot Password?
                             </a>
                         </div>
@@ -196,6 +197,21 @@ if (isset($_SESSION['token']))
         </div>
     </div>
 
+    <div id="forget_modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p style="text-align: center; color:red"><strong> Please contact you system administrator at <b>support@indepth.ae</b>  to reset password. </strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
 
     <!--===============================================================================================-->
     <script src="vendor/animsition/js/animsition.min.js"></script>
@@ -212,6 +228,9 @@ if (isset($_SESSION['token']))
 
 
     <script>
+
+
+
         var input = document.getElementById("password");
         input.addEventListener("keyup", function (event) {
             document.getElementById("user").value = document.getElementById("username").value;
