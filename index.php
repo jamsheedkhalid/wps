@@ -2,10 +2,10 @@
 include('header.php');
 if (isset($_SESSION['token']))
     header("Location: generateSIF.php");
+
+
+
 ?>
-
-
-
 
 
 <script>
@@ -112,7 +112,17 @@ if (isset($_SESSION['token']))
                         </div>
 
                         <?php unset($_SESSION['login']);
-                    } ?>   
+                    }  
+                    
+                     if (isset($_SESSION['noaccess'])) { ?>
+
+                        <div id='noaccess' class="alert alert-danger wrap-input100  m-b-12">
+                            <strong>Unauthorized!</strong> You are unauthorized to use this system. Please contact system administrator.
+                        </div>
+
+                        <?php unset($_SESSION['noaccess']);
+                    } ?>  
+                    
 
 
                     <div id='invalidCredentials' class="alert alert-danger wrap-input100  m-b-12" style="display: none;">
@@ -167,6 +177,7 @@ if (isset($_SESSION['token']))
     <form name="frm" onsubmit="return validateForm()" action="login.php" method="POST" style="display: none">
         <input id="token" type="hidden" name="token">
         <input id="iurl" type="hidden" name="iurl">
+        <input id="user" type="hidden" name="user">
        <!--<input id="key" type="hidden" name="key" value='1'>-->
 
         <input type= "submit" id="generate-payslip" value ="Generate Payslips">
@@ -203,6 +214,7 @@ if (isset($_SESSION['token']))
     <script>
         var input = document.getElementById("password");
         input.addEventListener("keyup", function (event) {
+            document.getElementById("user").value = document.getElementById("username").value;
             if (event.keyCode === 13)
                 document.getElementById("generate-button").click();
         });
