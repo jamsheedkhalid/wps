@@ -22,16 +22,26 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">PAYSLIPS</a>
             </li>
-       
-         
+            <li class="nav-item dropdown" >
+                <a class="nav-link dropdown-toggle" href="#" id="navAccess" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    ACCESS CONTROL
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navAccess">
+                    <a id='navUserActivity' class="dropdown-item" href="userActivity.php">User Activity</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">User Management</a>
+
+                </div>
+            </li>
+
         </ul>
-              
-         
+
+
     </div>
     <form action="logout.php">
         <button  type ='submit' href='logout.php' class="btn btn-danger btn-sm">
-          <span class="glyphicon glyphicon-log-out"></span> Log out
-                  </button>
+            <span class="glyphicon glyphicon-log-out"></span> Log out
+        </button>
     </form>
-          
+
 </nav>

@@ -3,13 +3,19 @@
 include('config/dbConfig.php');
 
 session_start();
+$login_time = date("H:i:s");
+$login_date = date("D,d-M-Y");
+$login = 0;
 if ($_POST['token'] != '') {
 
 
-    $sql = "select users.id user from users where users.username = '$_POST[user]';";
+
+    $sql = "select users.id user,users.first_name name from users where users.username = '$_POST[user]';";
     $result = $conn->query($sql);
-    while ($row = $result->fetch_assoc())
+    while ($row = $result->fetch_assoc()) {
         $user = $row['user'];
+        $name = $row['name'];
+    }
 //        echo $user;
 
 
@@ -26,25 +32,30 @@ if ($_POST['token'] != '') {
             $_SESSION['noaccess'] = 1;
             header('Location: index.php');
         }
-  
+
 //        
-    else {
-        $_SESSION['token'] = 1;
-        header('Location: generateSIF.php');
-//        unset($_SESSION['noaccess']);
+        else {
+            $login = 1;
+        }
+    } else {
+        $login = 1;
     }
-//  
-} 
-
-    else {
-        $_SESSION['token'] = 1;
-        header('Location: generateSIF.php');
-//        unset($_SESSION['noaccess']);
-    }
-
-}else {
+} else {
 // Jump to login page
     header('Location: index.php');
 }
 
+if ($login == 1) {
+    $_SESSION['token'] = 1;
+    header('Location: generateSIF.php');
+
+
+    $sql = "INSERT INTO wps_user_timestamps (user_id,user_name,timestamp,datestamp,action) VALUES ('$_POST[user]','$name','$login_time','$login_date','Login')";
+    if (mysqli_query($conn, $sql)) {
+        echo "New record created successfully";
+    } else {
+        echo "Error: " . $sql . "" . mysqli_error($conn);
+    }
+    $conn->close();
+}
 
