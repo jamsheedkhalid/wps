@@ -6,7 +6,13 @@ if (!isset($_SESSION['token'])) {
     header("Location: index.php"); //redirect to login page to secure the welcome page without login access.  
     $_SESSION['login'] = 1;
 }
+
+if (isset($_POST['employeeName']) && $_POST['employeeName'] != '') {
+    $_SESSION['employeeName'] = $_POST['employeeName'];
+}
 ?>
+
+
 
 <body>
     <div  class="animate">
@@ -32,11 +38,11 @@ if (!isset($_SESSION['token'])) {
 
 
                         <div class="col-sm-2" style="margin-top: 25px;" >
-                            <button  href="#" type="submit" style="margin-left: 20px" name='submitEmployee' id="submitEmployee" class="btn btn-success mb-2">Load Employee Details</button>
+                            <button   type="submit" style="margin-left: 20px"  id="submitEmployee" class="btn btn-success mb-2">Load Employee Details</button>
 
                         </div>
                         <div class="col-sm-2" style="margin-top: 25px;" >
-                            <button  href="#" type="reset" style="margin-left: 20px" name='resetEmployee' id="resetEmployee" class="btn btn-danger mb-2">Clear</button>
+                            <button   type="reset" style="margin-left: 20px" name='resetEmployee' id="resetEmployee" class="btn btn-danger mb-2">Clear</button>
 
                         </div>
 
@@ -80,7 +86,6 @@ if (!isset($_SESSION['token'])) {
     <script type="text/javascript">
 
         document.getElementById("navEmployees").classList.add('active');
-
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function () {
             if (this.readyState === 4)

@@ -4,7 +4,12 @@ include('../config/dbConfig.php');
 
 session_start();
 
-$employee = $_SESSION['employeeName'];
+
+if (isset($_SESSION['employeeName']) && ($_SESSION['employeeName']) != '') {
+    $employee = $_SESSION['employeeName'];
+} else
+    $employee = '';
+
 
 $sql = "SELECT  employees.id EID, employees.employee_number employee_number, CONCAT(employees.first_name,' ',employees.middle_name,' ',employees.last_name) name,"
         . "  employees.gender  gender,employees.first_name, employees.last_name, employees.middle_name,  "
@@ -14,7 +19,7 @@ $sql = "SELECT  employees.id EID, employees.employee_number employee_number, CON
         . " employee_departments.name department, employee_departments.code dept_code"
         . " FROM employees"
         . " LEFT JOIN employee_departments ON employees.employee_department_id = employee_departments.id ";
-    
+
 if ($employee != '')
     $sql = $sql . "  WHERE employees.employee_number LIKE '$employee%' OR employees.first_name LIKE '%$employee%' OR employees.middle_name LIKE '%$employee%' OR employees.last_name LIKE '%$employee%' ";
 
@@ -46,7 +51,7 @@ if ($result->num_rows > 0) {
 
     while ($row = $result->fetch_assoc()) {
         echo "<tr><td>" . $row["employee_number"] . "</td>"
-        . "<td>" . $row["name"] .  "</td>";
+        . "<td>" . $row["name"] . "</td>";
 
         $sqlID = "SELECT additional_info employee_account from employee_additional_details WHERE additional_field_id = 1 and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
@@ -54,17 +59,17 @@ if ($result->num_rows > 0) {
             while ($rowID = $resultID->fetch_assoc()) {
                 echo "<td>" . $rowID["employee_account"] . "</td>";
             }
-        }
-        else echo "<td style=color:red>-NA- </td>";
-        
+        } else
+            echo "<td style=color:red>-NA- </td>";
+
         $sqlID = "SELECT additional_info routing_no from employee_additional_details WHERE additional_field_id = 2 and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
         if ($resultID->num_rows > 0) {
             while ($rowID = $resultID->fetch_assoc()) {
                 echo "<td>" . $rowID["routing_no"] . "</td>";
             }
-        }
-        else echo "<td style=color:red>-NA- </td>";
+        } else
+            echo "<td style=color:red>-NA- </td>";
 
         $sqlID = "SELECT additional_info IBAN from employee_additional_details WHERE additional_field_id = 3 and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
@@ -72,42 +77,41 @@ if ($result->num_rows > 0) {
             while ($rowID = $resultID->fetch_assoc()) {
                 echo "<td>" . $rowID["IBAN"] . "</td>";
             }
-        }
-        else echo "<td style=color:red>-NA- </td>";
+        } else
+            echo "<td style=color:red>-NA- </td>";
 
         echo "<td>" . $row["gender"] . "</td>";
-                
+
         if ($row["job_title"] != '')
-        echo  "<td>" . $row["job_title"] . "</td>";
-        
-        else echo "<td style=color:red>-NA- </td>";
-        
-        
-        echo "<td>" .date("d-M-y", strtotime($row["joining_date"]))  . "</td>";
-        
+            echo "<td>" . $row["job_title"] . "</td>";
+        else
+            echo "<td style=color:red>-NA- </td>";
+
+
+        echo "<td>" . date("d-M-y", strtotime($row["joining_date"])) . "</td>";
+
         if ($row["mobile_phone"] != '')
-        echo "<td>" . $row["mobile_phone"] . "</td>";
-        
+            echo "<td>" . $row["mobile_phone"] . "</td>";
+
         else if ($row["home_phone"] != '')
-        echo "<td>" . $row["home_phone"] . "</td>";
-        
-        else  if ($row["office_phone1"] != '')
-           echo "<td>" . $row["office_phone1"] . "</td>";
-        else echo "<td style=color:red>-NA- </td>";
-        
+            echo "<td>" . $row["home_phone"] . "</td>";
+
+        else if ($row["office_phone1"] != '')
+            echo "<td>" . $row["office_phone1"] . "</td>";
+        else
+            echo "<td style=color:red>-NA- </td>";
+
         $sqlManager = "SELECT first_name, last_name, middle_name from employees WHERE id = '$row[manager_id]';";
 //        echo $sqlManager;
         $resultManager = $conn->query($sqlManager);
         if ($resultManager->num_rows > 0) {
-            while ($rowManager = $resultManager->fetch_assoc()) 
-                    echo "<td>" . $rowManager["first_name"] ." ". $rowManager["middle_name"] ." ". $rowManager["last_name"] . "</td>";
-        }
-        else echo "<td style=color:red>-NA- </td>";
-        
-        
-         echo "<td>" . $row["department"] . " (". $row["dept_code"].")</td></tr>";
- 
+            while ($rowManager = $resultManager->fetch_assoc())
+                echo "<td>" . $rowManager["first_name"] . " " . $rowManager["middle_name"] . " " . $rowManager["last_name"] . "</td>";
+        } else
+            echo "<td style=color:red>-NA- </td>";
 
+
+        echo "<td>" . $row["department"] . " (" . $row["dept_code"] . ")</td></tr>";
     }
     echo "</tbody>";
 } else {
@@ -117,6 +121,7 @@ if ($result->num_rows > 0) {
     . "<a href=# class=clos data-dismiss=alert>&times;</a>"
     . "</div>";
 }
+
 $_SESSION['employeeName'] = '';
 $conn->close();
 
