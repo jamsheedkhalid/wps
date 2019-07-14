@@ -94,7 +94,7 @@ if (isset($_POST['employeeName']) && $_POST['employeeName'] != '') {
             if (this.readyState === 4)
                 document.getElementById("employees").innerHTML = this.responseText;
         };
-        xmlhttp.open("POST", "sql/listUseractivity.php", false);
+        xmlhttp.open("POST", "sql/listUserActivity.php", false);
         xmlhttp.send();
 
 
