@@ -114,7 +114,7 @@ if (isset($_POST['employeeName']) && $_POST['employeeName'] != '') {
         });
     </script>
 
-    <script type="text/javascript" src="js/autoFill.js"></script>
+    <script type="text/javascript" src="js/autoFillUsers.js"></script>
 
 
 

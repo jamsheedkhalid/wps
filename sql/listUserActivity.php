@@ -3,11 +3,21 @@
 include('../config/dbConfig.php');
 session_start();
 
+if (isset($_SESSION['employeeName']) && ($_SESSION['employeeName']) != '') {
+    $username = $_SESSION['employeeName'];
+} else
+    $username = '';
 
-$sql = " SELECT * from wps_user_timestamps ";
+
+$sql = " SELECT DISTINCT  user_id, user_name, timestamp, datestamp, action from wps_user_timestamps ORDER BY id DESC";
+
+
+if ($username != '')
+$sql = " SELECT DISTINCT  user_id, user_name, timestamp, datestamp, action from wps_user_timestamps WHERE user_id LIKE '%$username%' "
+        . "OR user_name LIKE '%$username%' ORDER BY id DESC";
+
 
 $result = $conn->query($sql);
-//echo $sql;
 
 if ($result->num_rows > 0) {
 
