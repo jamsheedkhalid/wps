@@ -21,8 +21,6 @@ $sql = "SELECT
     employees.first_name first_name,
     employees.middle_name middle_name,
     employees.last_name last_name,
-    additional_fields.name additional,
-    employee_additional_details.additional_info info,
     employee_payslips.total_earnings salary,
     employee_payslips.days_count leaveCount,
     (payslips_date_ranges.end_date - payslips_date_ranges.start_date) + 1    workingDays,
@@ -44,8 +42,6 @@ $sql = "SELECT
     payroll_categories.name payrollCategory
 FROM
     employees
-INNER JOIN employee_additional_details ON employees.id = employee_additional_details.employee_id
-INNER  JOIN additional_fields ON employee_additional_details.additional_field_id = additional_fields.id
 INNER JOIN employee_payslips ON employees.id = employee_payslips.employee_id
 INNER JOIN payslips_date_ranges ON employee_payslips.payslips_date_range_id = payslips_date_ranges.id
 INNER JOIN employee_payslip_categories ON employee_payslips.id = employee_payslip_categories.employee_payslip_id
@@ -88,22 +84,22 @@ if ($result->num_rows > 0) {
     $edrCount = 0;
     $totalSalary = 0.00;
     while ($row = $result->fetch_assoc()) {
+        $iban = $routing_no = $employee_account = '';
 
-        $edrCount++;
-        echo "<tr><td>EDR</td>";
+
 
         $sqlID = "SELECT additional_info employee_account from employee_additional_details WHERE additional_field_id = 1 and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
         if ($resultID->num_rows > 0) {
             while ($rowID = $resultID->fetch_assoc()) {
-                echo "<td>" . $rowID["employee_account"] . "</td>";
+                $employee_account = $rowID["employee_account"];
             }
         }
         $sqlID = "SELECT additional_info routing_no from employee_additional_details WHERE additional_field_id = 2 and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
         if ($resultID->num_rows > 0) {
             while ($rowID = $resultID->fetch_assoc()) {
-                echo "<td>" . $rowID["routing_no"] . "</td>";
+                $routing_no = $rowID["routing_no"];
             }
         }
 
@@ -111,31 +107,43 @@ if ($result->num_rows > 0) {
         $resultID = $conn->query($sqlID);
         if ($resultID->num_rows > 0) {
             while ($rowID = $resultID->fetch_assoc()) {
-                echo "<td>" . $rowID["IBAN"] . "</td>";
+                $iban = $rowID["IBAN"];
             }
         }
 
-        echo "<td>" . $row["startDate"] . "</td>"
-        . "<td>" . $row["endDate"] . "</td>"
-        . "<td>" . $row["workingDays"] . "</td>";
-
-        if ($row["BasicSalary"] != NULL) {
-            echo "<td>" . $row["BasicSalary"] . "</td>";
-            $totalSalary += $row["BasicSalary"];
-        } else
-            echo "<td> 0.00 </td>";
-
-        if ($row["variableSalary"] != NULL) {
-            echo "<td>" . $row["variableSalary"] . "</td>";
-            $totalSalary += $row["variableSalary"];
-        } else
-            echo "<td> 0.00 </td>";
+        if ($iban != '' && $routing_no != '' && $employee_account != '') {
+            $edrCount++;
+            echo "<tr><td>EDR</td>";
 
 
-        if ($row["leaveCount"] != NULL)
-            echo "<td>" . $row["leaveCount"] . "</td>";
-        else
-            echo "<td> 0 </td></tr>";
+            echo "<td>" . $employee_account . "</td>";
+            echo "<td>" . $routing_no . "</td>";
+            echo "<td>" . $iban . "</td>";
+
+
+
+            echo "<td>" . $row["startDate"] . "</td>"
+            . "<td>" . $row["endDate"] . "</td>"
+            . "<td>" . $row["workingDays"] . "</td>";
+
+            if ($row["BasicSalary"] != NULL) {
+                echo "<td>" . $row["BasicSalary"] . "</td>";
+                $totalSalary += $row["BasicSalary"];
+            } else
+                echo "<td> 0.00 </td>";
+
+            if ($row["variableSalary"] != NULL) {
+                echo "<td>" . $row["variableSalary"] . "</td>";
+                $totalSalary += $row["variableSalary"];
+            } else
+                echo "<td> 0.00 </td>";
+
+
+            if ($row["leaveCount"] != NULL)
+                echo "<td>" . $row["leaveCount"] . "</td>";
+            else
+                echo "<td> 0 </td></tr>";
+        }
     }
     echo "<tr><td>SCR</td>"
     . "<td>" . $_SESSION["employerNo"] . "</td>"
@@ -153,7 +161,7 @@ if ($result->num_rows > 0) {
 
     echo "<div class=alert alert-success>"
     . "<strong style=color:red;>No Payslips Found!</strong> Please try to change the date or approve pending payslips.  "
-    . "<a href=# class=clos data-dismiss=alert>&times;</a>"
+    . "<a href=# class=close data-dismiss=alert>&times;</a>"
     . "</div>";
 }
 $conn->close();

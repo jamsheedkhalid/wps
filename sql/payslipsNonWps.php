@@ -20,8 +20,6 @@ $sql = "SELECT
     employees.first_name first_name,
     employees.middle_name middle_name,
     employees.last_name last_name,
-    additional_fields.name additional,
-    employee_additional_details.additional_info info,
     employee_payslips.total_earnings salary,
     employee_payslips.days_count leaveCount,
     (payslips_date_ranges.end_date - payslips_date_ranges.start_date) + 1    workingDays,
@@ -43,8 +41,6 @@ $sql = "SELECT
     payroll_categories.name payrollCategory
 FROM
     employees
-LEFT JOIN employee_additional_details ON employees.id = employee_additional_details.employee_id
-LEFT  JOIN additional_fields ON employee_additional_details.additional_field_id = additional_fields.id
 INNER JOIN employee_payslips ON employees.id = employee_payslips.employee_id
 INNER JOIN payslips_date_ranges ON employee_payslips.payslips_date_range_id = payslips_date_ranges.id
 INNER JOIN employee_payslip_categories ON employee_payslips.id = employee_payslip_categories.employee_payslip_id
@@ -66,11 +62,8 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
 
-
-
-
     while ($row = $result->fetch_assoc()) {
-
+        $iban = $routing_no = $employee_account = '';
         $sqlID = "SELECT additional_info employee_account from employee_additional_details WHERE additional_field_id = 1 and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
         if ($resultID->num_rows > 0) {
@@ -78,6 +71,7 @@ if ($result->num_rows > 0) {
                 $employee_account = $rowID["employee_account"];
             }
         }
+
 
 
         $sqlID = "SELECT additional_info routing_no from employee_additional_details WHERE additional_field_id = 2 and employee_id = '$row[EID]' ";
@@ -123,10 +117,18 @@ if ($result->num_rows > 0) {
             echo "<tr><td>" . $row["empID"] . "</td>"
             . "<td>" . $row["first_name"] . " " . $row["middle_name"] . " " . $row["last_name"] . "</td>";
 
-            echo "<td>" . $rowID["employee_account"] . "</td>";
-            echo "<td>" . $rowID["routing_no"] . "</td>";
-            echo "<td>" . $rowID["IBAN"] . "</td>";
-
+            if($employee_account != '')
+            echo "<td>" . $employee_account . "</td>";
+            else echo "<td style=color:red> -NA- </td>";
+            
+            if($routing_no != '')
+            echo "<td>" . $routing_no . "</td>";
+            else echo "<td style=color:red> -NA- </td>";
+            
+            if($iban != '')
+            echo "<td>" . $iban . "</td>";
+            else echo "<td style=color:red> -NA- </td>";
+            
             echo "<td>" . $row["startDate"] . "</td>"
             . "<td>" . $row["endDate"] . "</td>"
             . "<td>" . $row["workingDays"] . "</td>";
@@ -149,8 +151,6 @@ if ($result->num_rows > 0) {
                 echo "<td> 0 </td></tr>";
 
             echo "</tbody>";
-        } else {
-            $flag = 1;
         }
     }
 } else {

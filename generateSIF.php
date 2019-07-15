@@ -82,9 +82,10 @@ if (!isset($_SESSION['token'])) {
                                     <?php
                                     if (isset($_POST['submitSalary']) && $_POST['salaryDate'] != '') {
                                         echo "Salary Payment For the Month: " . $_POST['salaryDate'];
+                                        echo "<br><br><u>WPS Payslips</u>";
                                         $_SESSION['salaryDate'] = $_POST['salaryDate'];
                                     } else
-                                        echo "<u>Approved Payslips</u>";
+                                        echo "<u>WPS Payslips</u>";
                                     ?> 
                                 </h4> 
                             </div>
@@ -119,7 +120,6 @@ if (!isset($_SESSION['token'])) {
                                                         <div class="col-sm-12">
                                 <h4 class="card-title" style="text-align: center; float: center;  font-weight: bold; color: maroon">
                                     <?php
-                                    if (isset($_POST['submitSalary']))
                                         echo "<u>Non WPS Payslips</u>";
                                     ?> 
                                 </h4> 
