@@ -9,12 +9,12 @@ if (isset($_SESSION['employeeName']) && ($_SESSION['employeeName']) != '') {
     $username = '';
 
 
-$sql = " SELECT DISTINCT  user_id, user_name, timestamp, datestamp, action from wps_user_timestamps ORDER BY id DESC";
+$sql = " SELECT DISTINCT  user_id, user_name, timestamp, datestamp,ip, action from wps_user_timestamps ORDER BY id DESC";
 
 
 if ($username != '')
-$sql = " SELECT DISTINCT  user_id, user_name, timestamp, datestamp, action from wps_user_timestamps WHERE user_id LIKE '%$username%' "
-        . "OR user_name LIKE '%$username%' ORDER BY id DESC";
+    $sql = " SELECT DISTINCT  user_id, user_name, timestamp, datestamp, action from wps_user_timestamps WHERE user_id LIKE '%$username%' "
+            . "OR user_name LIKE '%$username%' ORDER BY id DESC";
 
 
 $result = $conn->query($sql);
@@ -27,6 +27,7 @@ if ($result->num_rows > 0) {
                                             <th scope=col>User Name</th>
                                             <th scope=col>Time</th>
                                             <th scope=col>Date</th>
+                                             <th scope=col>IP</th>
                                             <th scope=col>Action</th>
                                         </tr>
                                     </thead>
@@ -36,13 +37,12 @@ if ($result->num_rows > 0) {
         echo "<tr><td>" . $row["user_id"] . "</td>"
         . "<td>" . $row["user_name"] . "</td>"
         . "<td>" . $row["timestamp"] . "</td>"
-        . "<td>" . $row["datestamp"] . "</td>";
-                if ($row["action"] == 'Login')
-        echo  "<td style='background:darkgreen;color:white' >" . $row["action"] . "</td>";
-                else
-        echo "<td style='background:darkred; color:white' >" . $row["action"] . "</td>";
-
-                    
+        . "<td>" . $row["datestamp"] . "</td>"
+        . "<td>" . $row["ip"] . "</td>";
+        if ($row["action"] == 'Login')
+            echo "<td style='background:darkgreen;color:white' >" . $row["action"] . "</td>";
+        else
+            echo "<td style='background:darkred; color:white' >" . $row["action"] . "</td>";
     }
     echo "</tbody>";
 } else {
