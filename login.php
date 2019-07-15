@@ -4,15 +4,16 @@ include('config/dbConfig.php');
 
 session_start();
 date_default_timezone_set('Asia/Dubai');
-
+$user_ip = getUserIP();
 $login_time = date("H:i:s");
 $login_date = date("D,d-M-Y");
 $login = 0;
 if ($_POST['token'] != '') {
 
-    $user_ip = getUserIP();
+   
 
     $_SESSION['user'] = $_POST['user'];
+    
     $sql = "select users.id user,users.first_name name from users where users.username = '$_POST[user]';";
     $result = $conn->query($sql);
     while ($row = $result->fetch_assoc()) {

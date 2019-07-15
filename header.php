@@ -1,8 +1,8 @@
 
 <?php
-session_cache_limiter('private');
-/* set the cache expire to 30 minutes */
-session_cache_expire(1);
+//session_cache_limiter('private');
+///* set the cache expire to 30 minutes */
+//session_cache_expire(1);
 session_start();
 date_default_timezone_set('Asia/Dubai');
 ?>
@@ -50,7 +50,11 @@ date_default_timezone_set('Asia/Dubai');
         <script src="js/jquery.tabletocsv.js"></script>
         <script src="js/gen_validatorv4.js"></script>
         <script src="js/autoFill.js"></script>
-
+        <script src="js/tableHTMLExport.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.5/jspdf.plugin.autotable.min.js"></script>
+        
+  
         <link href='https://fonts.googleapis.com/css' rel='stylesheet'>
         <link rel="stylesheet" href="css/style.css">
         <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
