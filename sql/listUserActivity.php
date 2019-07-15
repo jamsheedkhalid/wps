@@ -36,8 +36,13 @@ if ($result->num_rows > 0) {
         echo "<tr><td>" . $row["user_id"] . "</td>"
         . "<td>" . $row["user_name"] . "</td>"
         . "<td>" . $row["timestamp"] . "</td>"
-        . "<td>" . $row["datestamp"] . "</td>"
-        . "<td>" . $row["action"] . "</td>";
+        . "<td>" . $row["datestamp"] . "</td>";
+                if ($row["action"] == 'Login')
+        echo  "<td style='background:darkgreen;color:white' >" . $row["action"] . "</td>";
+                else
+        echo "<td style='background:darkred; color:white' >" . $row["action"] . "</td>";
+
+                    
     }
     echo "</tbody>";
 } else {

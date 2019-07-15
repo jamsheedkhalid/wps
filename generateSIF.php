@@ -115,6 +115,20 @@ if (!isset($_SESSION['token'])) {
                                 <table class="table table-striped  table-bordered  table-hover table-sm" id='payslips'></table>
 
                             </div>
+                            
+                                                        <div class="col-sm-12">
+                                <h4 class="card-title" style="text-align: center; float: center;  font-weight: bold; color: maroon">
+                                    <?php
+                                    if (isset($_POST['submitSalary']))
+                                        echo "<u>Non WPS Payslips</u>";
+                                    ?> 
+                                </h4> 
+                            </div>
+                            <div  class="col-sm-12"style="overflow-x:auto; padding-top: 20px">       
+
+                                <table class="table table-striped  table-bordered  table-hover table-sm" id='nonWpsPayslips'></table>
+                            </div>
+
 
                         </div>
                     </div>
@@ -122,7 +136,6 @@ if (!isset($_SESSION['token'])) {
                     <input id="viewSIF" value="Generate SIF" class="btn btn-primary mb-2" type="button" >
                     <input id="downloadSIF" value="Download SIF" class="btn btn-primary mb-2" type="button" style="visibility: hidden" onclick="$('#payslipsSIF').tableToCsv({outputheaders: false, fileName: '<?php echo $_SESSION['employerNo'] . date('ymdHis'); ?>'});">
                     <table class="table" style="visibility: hidden" id='payslipsSIF'></table>
-
                 </div>
 
             </div>
@@ -130,35 +143,8 @@ if (!isset($_SESSION['token'])) {
         </div>
     </div>
 
+</body>
 
-    <!-------------------------------------java scripts------------------------------------>
-    <script type="text/javascript">
-
-        document.getElementById("navSifCreator").classList.add('active');
-
-        var salaryDate = document.getElementById("salaryDate").value;
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState === 4)
-                document.getElementById("payslips").innerHTML = this.responseText;
-        };
-        xmlhttp.open("POST", "sql/payslips.php", false);
-        xmlhttp.send();
-
-        var sifhtttp = new XMLHttpRequest();
-        sifhtttp.onreadystatechange = function () {
-            if (this.readyState === 4)
-                document.getElementById("payslipsSIF").innerHTML = this.responseText;
-        };
-        sifhtttp.open("POST", "sql/payslipsSIF.php", false);
-        sifhtttp.send();
-
-        document.getElementById("employerBankNo").value = '<?php if (isset($_SESSION["employerNo"])) echo $_SESSION["employerNo"]; ?>';
-        document.getElementById("employerRouting").value = '<?php if (isset($_SESSION["employerRouting"])) echo $_SESSION["employerRouting"]; ?>';
-        document.getElementById("salaryDate").value = '<?php if (isset($_SESSION["salaryDate"])) echo $_SESSION["salaryDate"]; ?>';
-
-
-    </script>
 
     <script type="text/javascript">
 
@@ -176,17 +162,20 @@ if (!isset($_SESSION['token'])) {
                 document.getElementById("viewSIF").classList.add('btn-danger');
 
 
-                var $employerNo = "<?php if (isset($_SESSION['employerNo']) && $_SESSION['employerNo'] != '')
+                var $employerNo = "<?php
+                                    if (isset($_SESSION['employerNo']) && $_SESSION['employerNo'] != '')
                                         echo $_SESSION['employerNo'];
                                     else
                                         echo "";
                                     ?>";
-                var $employerRouting = "<?php if (isset($_SESSION['employerRouting']) && $_SESSION['employerRouting'] != '')
+                var $employerRouting = "<?php
+                                    if (isset($_SESSION['employerRouting']) && $_SESSION['employerRouting'] != '')
                                         echo $_SESSION['employerRouting'];
                                     else
                                         echo "";
                                     ?>";
-                var $salaryDate = "<?php if (isset($_SESSION['salaryDate']) && $_SESSION['salaryDate'] != '')
+                var $salaryDate = "<?php
+                                    if (isset($_SESSION['salaryDate']) && $_SESSION['salaryDate'] != '')
                                         echo $_SESSION['salaryDate'];
                                     else
                                         echo "";
@@ -226,6 +215,52 @@ if (!isset($_SESSION['token'])) {
         });
     </script>
 
+    
+        <!-------------------------------------java scripts------------------------------------>
+    <script type="text/javascript">
+
+        document.getElementById("navSifCreator").classList.add('active');
+
+        var salaryDate = document.getElementById("salaryDate").value;
+
+        var wpshhtp = new XMLHttpRequest();
+        wpshhtp.onreadystatechange = function () {
+            if (this.readyState === 4)
+                document.getElementById("nonWpsPayslips").innerHTML = this.responseText;
+        };
+        wpshhtp.open("POST", "sql/payslipsNonWps.php", false);
+        wpshhtp.send();
+
+
+//------------------------------------------------------------------------------------------
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState === 4)
+                document.getElementById("payslips").innerHTML = this.responseText;
+        };
+        xmlhttp.open("POST", "sql/payslips.php", false);
+        xmlhttp.send();
+        
+//-------------------------------------------------------------------------------------------
+        
+    
+    var sifhtttp = new XMLHttpRequest();
+        sifhtttp.onreadystatechange = function () {
+            if (this.readyState === 4)
+                document.getElementById("payslipsSIF").innerHTML = this.responseText;
+        };
+        sifhtttp.open("POST", "sql/payslipsSIF.php", false);
+        sifhtttp.send();
+
+
+        document.getElementById("employerBankNo").value = '<?php if (isset($_SESSION["employerNo"])) echo $_SESSION["employerNo"]; ?>';
+        document.getElementById("employerRouting").value = '<?php if (isset($_SESSION["employerRouting"])) echo $_SESSION["employerRouting"]; ?>';
+        document.getElementById("salaryDate").value = '<?php if (isset($_SESSION["salaryDate"])) echo $_SESSION["salaryDate"]; ?>';
+
+
+    </script>
+    
     <script >
         var frmvalidator = new Validator("formPayslip");
         frmvalidator.addValidation("employerBankNo", "maxlen=13", "Maximum length for Employer Unique Number  is 13");
@@ -244,7 +279,7 @@ if (!isset($_SESSION['token'])) {
 
     <!-------------------------------End of Java Scripts------------------------------------>        
 
-</body>
+
 </html>
 
 

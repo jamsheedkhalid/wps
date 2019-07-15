@@ -20,7 +20,7 @@
                 <a id='navEmployees' class="nav-link" href="employees.php">EMPLOYEE LISTS</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">PAYSLIPS</a>
+                <a class="nav-link" id=''  href="payslips.php">PAYSLIPS</a>
             </li>
             <li class="nav-item dropdown" >
                 <a class="nav-link dropdown-toggle" href="#" id="navAccess" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -29,7 +29,7 @@
                 <div class="dropdown-menu" aria-labelledby="navAccess">
                     <a id='navUserActivity' class="dropdown-item" href="userActivity.php">User Activity</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">User Management</a>
+                    <a class="dropdown-item" id="" href="userManagement.php">User Management</a>
 
                 </div>
             </li>
