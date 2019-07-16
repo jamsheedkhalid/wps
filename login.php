@@ -14,7 +14,7 @@ if ($_POST['token'] != '') {
 
     $_SESSION['user'] = $_POST['user'];
     
-    $sql = "select users.id user,users.first_name name from users where users.username = '$_POST[user]';";
+    $sql = "select users.id user,users.first_name name from users where users.username = '$_POST[user]';"; 
     $result = $conn->query($sql);
     while ($row = $result->fetch_assoc()) {
         $user = $row['user'];
@@ -22,10 +22,9 @@ if ($_POST['token'] != '') {
     }
 
 
-    $sql = "select privilege_id, user_id, users.first_name name from privileges_users"
-            . " INNER JOIN users ON users.id = privileges_users.user_id "
-            . "where users.id = '$user' and privilege_id = 27;";
-
+    $sql = "SELECT *  FROM wps_users "
+            . "WHERE wps_users.username = '$_SESSION[user]' ;";
+echo $sql;
     $result = $conn->query($sql);
     if ($result->num_rows > 0)
         $login = 1;
@@ -48,8 +47,6 @@ if ($_POST['token'] != '') {
 
 if ($login == 1) {
     $_SESSION['token'] = 1;
-
-
 
     $sql = "INSERT INTO wps_user_timestamps (user_id,user_name,timestamp,datestamp,ip,action) VALUES ('$_POST[user]','$_SESSION[name]','$login_time','$login_date','$user_ip','Login')";
     if (mysqli_query($conn, $sql)) {
