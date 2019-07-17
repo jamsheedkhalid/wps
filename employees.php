@@ -81,6 +81,26 @@ if (isset($_POST['employeeName']) && $_POST['employeeName'] != '') {
 
         </div>
     </div>
+    
+    <!-- Modal -->
+<div class="modal fade" id="employeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">You selection</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id='modalBody'>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+    
 
 
     <!-------------------------------------java scripts------------------------------------>
@@ -115,20 +135,48 @@ if (isset($_POST['employeeName']) && $_POST['employeeName'] != '') {
     <script type="text/javascript" src="js/autoFill.js"></script>
 
 
-<!--        <script >
+     
 
-var frmvalidator = new Validator("formPayslip");
-frmvalidator.addValidation("employerBankNo","maxlen=13","Maximum length for Employer Unique Number  is 13");
-frmvalidator.addValidation("employerBankNo","num","Only digits are allowed in Employer Unique Number");
+<script>
+    function highlight_row() {
+    var table = document.getElementById('employees');
+    var cells = table.getElementsByTagName('td');
+
+    for (var i = 0; i < cells.length; i++) {
+        // Take each cell
+        var cell = cells[i];
+        // do something on onclick event for cell
+        cell.onclick = function () {
+            // Get the row id where the cell exists
+            var rowId = this.parentNode.rowIndex;
+
+            var rowsNotSelected = table.getElementsByTagName('tr');
+            for (var row = 0; row < rowsNotSelected.length; row++) {
+                rowsNotSelected[row].style.backgroundColor = "";
+                rowsNotSelected[row].style.color = "";
+                rowsNotSelected[row].classList.remove('selected');
+            }
+            var rowSelected = table.getElementsByTagName('tr')[rowId+1];
+            rowSelected.style.backgroundColor = "#27a17c";
+            rowSelected.style.color = "white";
+            rowSelected.className += " selected";
+
+            msg = 'Employee ID: ' + rowSelected.cells[0].innerHTML;
+            msg += '\n Employee Name: ' + rowSelected.cells[1].innerHTML;
+            msg += '\n Cell value: ' + this.innerHTML;
+            //            alert(msg);
+            $("#employeeModal .modal-body").text(msg);
+            $('#employeeModal').modal('show');
+        
+        }
+    }
+
+} //end of function
+
+window.onload = highlight_row;
 
 
-frmvalidator.addValidation("employerRouting","maxlen=9","Maximum length for Bank Routing Code  is 9");
-frmvalidator.addValidation("employerRouting","num","Only digits are allowed in Bank Routing Code");
-
-frmvalidator.addValidation("salaryDate","regexp=((0-1)?([0-9]){1}\/([0-9]){4})","Invalid Date Format! Use MM/YYYY ");
-
-
-</script>-->
+</script>
 
 
 
