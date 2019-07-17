@@ -78,5 +78,15 @@ date_default_timezone_set('Asia/Dubai');
                 display: block;
                 margin-top: 0; // remove the gap so it doesn't close
             }
+   
+         
+            
+td {
+ min-width:100px;
+    max-width:300px;
+ 
+}
+
+
         </style>
     </head>

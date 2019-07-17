@@ -20,6 +20,9 @@ $sql = "SELECT
     employees.first_name first_name,
     employees.middle_name middle_name,
     employees.last_name last_name,
+     employee_payslips.is_approved approve,
+      employee_payslips.is_rejected rejected,
+       employee_payslips.reason reason,
     employee_payslips.total_earnings salary,
     employee_payslips.days_count leaveCount,
     (payslips_date_ranges.end_date - payslips_date_ranges.start_date) + 1    workingDays,
@@ -41,12 +44,12 @@ $sql = "SELECT
     payroll_categories.name payrollCategory
 FROM
     employees
-INNER JOIN employee_payslips ON employees.id = employee_payslips.employee_id
-INNER JOIN payslips_date_ranges ON employee_payslips.payslips_date_range_id = payslips_date_ranges.id
+LEFT JOIN employee_payslips ON employees.id = employee_payslips.employee_id
+LEFT JOIN payslips_date_ranges ON employee_payslips.payslips_date_range_id = payslips_date_ranges.id
 INNER JOIN employee_payslip_categories ON employee_payslips.id = employee_payslip_categories.employee_payslip_id
 INNER JOIN payroll_categories ON employee_payslip_categories.payroll_category_id = payroll_categories.id
 WHERE
-    employee_payslips.is_approved = 1 AND employee_payslips.is_rejected = 0 AND payroll_categories.id = 1 ";
+     payroll_categories.id = 1 ";
 
 if ($salaryDate != '')
     $sql = $sql . "AND payslips_date_ranges.start_date = '$salaryDate' ";
@@ -90,13 +93,11 @@ if ($result->num_rows > 0) {
             while ($rowID = $resultID->fetch_assoc()) {
                 $iban = $rowID["IBAN"];
             }
-        }
-
-        if ($iban != '' && $routing_no != '' && $employee_account != '') {
+        } {
 
             if ($thead == 1) {
 
-                echo "  <thead id=tablehead class=thead-dark ><tr>
+                echo " <thead style=position:relate id=tablehead class=thead-dark ><tr>
                                             <th scope=col>ID</th>
                                             <th scope=col>Name</th>
                                             <th scope=col>Employee Unique Number</th>
@@ -109,7 +110,9 @@ if ($result->num_rows > 0) {
                                             <th scope=col>Variable Salary</th>
                                             <th scope=col>Deduction</th>
                                             <th scope=col>Days on Leave</th>
-                                        </tr>
+                                            <th scope=col>Reason</th>
+                                            <th scope=col>Status</th>
+                                        </tr> 
                                     </thead>
                                     <tbody>";
 
@@ -118,9 +121,18 @@ if ($result->num_rows > 0) {
             echo "<tr><td>" . $row["empID"] . "</td>"
             . "<td>" . $row["first_name"] . " " . $row["middle_name"] . " " . $row["last_name"] . "</td>";
 
+             if($employee_account != '')
             echo "<td>" . $employee_account . "</td>";
+             else
+                 echo "<td style=color:red> -NA- </td>";
+             if($routing_no != '')
             echo "<td>" . $routing_no . "</td>";
+             else
+                 echo "<td style=color:red> -NA- </td>";
+             if($iban !='')
             echo "<td>" . $iban . "</td>";
+             else
+                 echo "<td style=color:red> -NA- </td>";
 
             echo "<td>" . $row["startDate"] . "</td>"
             . "<td>" . $row["endDate"] . "</td>"
@@ -141,9 +153,25 @@ if ($result->num_rows > 0) {
             if ($row["leaveCount"] != NULL)
                 echo "<td>" . $row["leaveCount"] . "</td>";
             else
-                echo "<td> 0 </td></tr>";
+                echo "<td> 0 </td>";
+            
+               if ($row["reason"] != '')
+                echo "<td>" . $row["reason"] . "</td>";
+            else
+                echo "<td style=color:red> -NA- </td>";
+            
+            if($row['rejected'] == 1)
+                echo "<td>  <label  class='btn btn-danger mb-2' style=width:100%>Rejected</label> </td></tr>";
+            else if ($row['approve'] == 1)
+                echo "<td>  <label  class='btn btn-success mb-2' style=width:100%>Approved</label> </td></tr>";
+            else
+                echo "<td>  <label  class='btn btn-warning mb-2' style=width:100%>Pending</label> </td></tr>";
+                
+                
 
             echo "</tbody>";
+            unset($_SESSION['salaryDate']);
+            $salaryDate = '';
         }
     }
 } else {
@@ -160,5 +188,4 @@ if ($flag == 1) {
 }
 $conn->close();
 
-
-
+?>

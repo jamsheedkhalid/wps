@@ -20,7 +20,7 @@
                 <a id='navEmployees' class="nav-link" href="employees.php">EMPLOYEE LISTS</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id=''  href="payslips.php">PAYSLIPS</a>
+                <a class="nav-link" id='pay'  href="payslips.php">PAYSLIPS</a>
             </li>
             <li class="nav-item dropdown" >
                 <a class="nav-link dropdown-toggle" href="#" id="navAccess" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

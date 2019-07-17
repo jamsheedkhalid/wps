@@ -40,9 +40,9 @@ if ($result->num_rows > 0) {
         . "<td>" . $row["datestamp"] . "</td>"
         . "<td>" . $row["ip"] . "</td>";
         if ($row["action"] == 'Login')
-            echo "<td style='background:darkgreen;color:white' >" . $row["action"] . "</td>";
+         echo "<td>  <label  class='btn btn-success mb-2' style=width:100%>Logged in</label> </td></tr>";
         else
-            echo "<td style='background:darkred; color:white' >" . $row["action"] . "</td>";
+         echo "<td>  <label  class='btn btn-danger mb-2' style=width:100%>Logged out</label> </td></tr>";
     }
     echo "</tbody>";
 } else {

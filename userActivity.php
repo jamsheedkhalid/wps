@@ -63,7 +63,7 @@ if (isset($_POST['employeeName']) && $_POST['employeeName'] != '') {
                             </div>
 
 
-                            <div  class="col-sm-12"style="overflow-x:auto; padding-top: 20px">       
+                            <div  class="col-sm-12" style="overflow-x:auto;overflow-y:auto;height: 80vh;padding-top: 20px">       
                                 <table class="table table-striped   table-hover table-sm" id='employees'></table>
 
                             </div>
