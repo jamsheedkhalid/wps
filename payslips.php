@@ -87,6 +87,30 @@ if (!isset($_SESSION['token'])) {
 
         </div>
     </div>
+    
+    
+    
+
+
+<!-- Modal -->
+<div class="modal fade" id="payslipModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">You selection</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id='modalBody'>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+    
 
 </body>
 
@@ -159,15 +183,17 @@ if (!isset($_SESSION['token'])) {
                 rowsNotSelected[row].style.color = "";
                 rowsNotSelected[row].classList.remove('selected');
             }
-            var rowSelected = table.getElementsByTagName('tr')[rowId];
+            var rowSelected = table.getElementsByTagName('tr')[rowId+1];
             rowSelected.style.backgroundColor = "#27a17c";
             rowSelected.style.color = "white";
             rowSelected.className += " selected";
 
-            msg = 'Employee ID : ' + rowSelected.cells[0].innerHTML;
-            msg += '\nEmployee Name : ' + rowSelected.cells[1].innerHTML;
-            msg += '\nCell value : ' + this.innerHTML;
-            alert(msg);
+            msg = 'Employee ID: ' + rowSelected.cells[0].innerHTML;
+            msg += '\n Employee Name: ' + rowSelected.cells[1].innerHTML;
+            msg += '\n Cell value: ' + this.innerHTML;
+//            alert(msg);
+            $("#payslipModal .modal-body").text(msg);
+            $('#payslipModal').modal('show');
         }
     }
 

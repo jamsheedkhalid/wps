@@ -83,10 +83,9 @@ date_default_timezone_set('Asia/Dubai');
             
 td {
  min-width:100px;
-    max-width:300px;
+    max-width:500px;
  
 }
-
 
         </style>
     </head>

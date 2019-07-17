@@ -1,5 +1,4 @@
 <?php
-
 include('../config/dbConfig.php');
 
 session_start();
@@ -114,6 +113,23 @@ if ($result->num_rows > 0) {
                                             <th scope=col>Status</th>
                                         </tr> 
                                     </thead>
+                                    <tfoot style=position:relate id=tablehead class=thead-dark ><tr>
+                                            <th scope=col>ID</th>
+                                            <th scope=col>Name</th>
+                                            <th scope=row>Employee Unique Number</th>
+                                            <th scope=col>Agent ID</th>
+                                            <th scope=col>Employee Account</th>
+                                            <th scope=col>Pay Start Date</th>
+                                            <th scope=col>Pay End Date</th>
+                                            <th scope=col>Days Paid</th>
+                                            <th scope=col>Fixed Salary</th>  
+                                            <th scope=col>Variable Salary</th>
+                                            <th scope=col>Deduction</th>
+                                            <th scope=col>Days on Leave</th>
+                                            <th scope=col>Reason</th>
+                                            <th scope=col>Status</th>
+                                        </tr> 
+                                    </tfoot>
                                     <tbody>";
 
                 $thead++;
@@ -121,18 +137,89 @@ if ($result->num_rows > 0) {
             echo "<tr><td>" . $row["empID"] . "</td>"
             . "<td>" . $row["first_name"] . " " . $row["middle_name"] . " " . $row["last_name"] . "</td>";
 
-             if($employee_account != '')
-            echo "<td>" . $employee_account . "</td>";
-             else
-                 echo "<td style=color:red> -NA- </td>";
-             if($routing_no != '')
-            echo "<td>" . $routing_no . "</td>";
-             else
-                 echo "<td style=color:red> -NA- </td>";
-             if($iban !='')
-            echo "<td>" . $iban . "</td>";
-             else
-                 echo "<td style=color:red> -NA- </td>";
+            if ($employee_account != '') {
+                echo '<td  style="min-width:200px;max-width:500px;">';
+                ?>
+
+                <div class="input-group" style="margin-right: 10px">
+                    <input type="text" style="width:120px" class="form-control" placeholder="Employees' acc#" value='<?php echo $employee_account; ?>'>
+                    <div class="input-group-append">
+                        <button style="margin-right: 10px" class="btn btn-outline-success" type="button">&#x2714;</button>
+                    </div>
+                    
+                </div>            
+
+                <?php
+                echo '</td>';
+            } else 
+                {  echo '<td  style="min-width:200px;max-width:500px;">'; ?>
+
+                 <div class="input-group" >
+                    <input type="text" style="width:120px" style="width:150px"class="form-control" placeholder="Enter employees' acc#" >
+                    <div class="input-group-append">
+                        <button style="margin-right: 10px" class="btn btn-outline-danger" type="button">&#x2714;</button>
+                    </div>
+                </div>  
+               
+ <?php 
+         echo '</td>';   }
+                
+
+         if ($routing_no != '') {
+                echo '<td  style="min-width:200px;max-width:500px;">';
+                ?>
+
+                <div class="input-group" style="padding-right: 10px">
+                    <input type="text" style="width:150px"class="form-control" placeholder="Enter Routing#" value='<?php echo $routing_no; ?>'>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-success" type="button">&#x2714;</button>
+                    </div>
+                </div>            
+
+                <?php
+                echo '</td>';
+            } else 
+                {  echo '<td  style="min-width:200px;max-width:500px;">'; ?>
+
+                 <div class="input-group" style="padding-right: 10px">
+                    <input type="text" style="width:150px"class="form-control" placeholder="Enter Routing#" >
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-danger" type="button">&#x2714;</button>
+                    </div>
+                </div>  
+               
+ <?php 
+         echo '</td>';   }
+                
+            
+            
+            
+         if ($iban != '') {
+                echo '<td  style="min-width:200px;max-width:500px;">';
+                ?>
+
+                <div class="input-group" style="padding-right: 10px">
+                    <input type="text" style="width:150px"class="form-control" placeholder="Enter IBAN#" value='<?php echo $iban; ?>'>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-success" type="button">&#x2714;</button>
+                    </div>
+                </div>            
+
+                <?php
+                echo '</td>';
+            } else 
+                {  echo '<td  style="min-width:200px;max-width:500px;">'; ?>
+
+                 <div class="input-group" style="padding-right: 10px">
+                    <input type="text" style="width:150px"class="form-control" placeholder="Enter IBAN#" >
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-danger" type="button">&#x2714;</button>
+                    </div> 
+                </div>  
+               
+ <?php 
+         echo '</td>';   }
+                
 
             echo "<td>" . $row["startDate"] . "</td>"
             . "<td>" . $row["endDate"] . "</td>"
@@ -154,20 +241,20 @@ if ($result->num_rows > 0) {
                 echo "<td>" . $row["leaveCount"] . "</td>";
             else
                 echo "<td> 0 </td>";
-            
-               if ($row["reason"] != '')
+
+            if ($row["reason"] != '')
                 echo "<td>" . $row["reason"] . "</td>";
             else
                 echo "<td style=color:red> -NA- </td>";
-            
-            if($row['rejected'] == 1)
+
+            if ($row['rejected'] == 1)
                 echo "<td>  <label  class='btn btn-danger mb-2' style=width:100%>Rejected</label> </td></tr>";
             else if ($row['approve'] == 1)
                 echo "<td>  <label  class='btn btn-success mb-2' style=width:100%>Approved</label> </td></tr>";
             else
                 echo "<td>  <label  class='btn btn-warning mb-2' style=width:100%>Pending</label> </td></tr>";
-                
-                
+
+
 
             echo "</tbody>";
             unset($_SESSION['salaryDate']);
@@ -187,5 +274,4 @@ if ($flag == 1) {
     . "</div>";
 }
 $conn->close();
-
 ?>
