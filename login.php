@@ -8,9 +8,7 @@ $user_ip = getUserIP();
 $login_time = date("H:i:s");
 $login_date = date("D,d-M-Y");
 $login = 0;
-if ($_POST['token'] != '') {
-
-   
+if ($_POST['token'] != '') {  
 
     $_SESSION['user'] = $_POST['user'];
     
@@ -46,6 +44,7 @@ echo $sql;
 }
 
 if ($login == 1) {
+    
     $_SESSION['token'] = 1;
 
     $sql = "INSERT INTO wps_user_timestamps (user_id,user_name,timestamp,datestamp,ip,action) VALUES ('$_POST[user]','$_SESSION[name]','$login_time','$login_date','$user_ip','Login')";

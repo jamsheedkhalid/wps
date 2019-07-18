@@ -1,10 +1,11 @@
 <?php
+session_start();
 include('header.php');
 
 
 if (!isset($_SESSION['token'])) {
-    header("Location: index.php"); //redirect to login page to secure the welcome page without login access.  
     $_SESSION['login'] = 1;
+     header("Location: index.php");
 }
 
 if (isset($_POST['employeeName']) && $_POST['employeeName'] != '') {

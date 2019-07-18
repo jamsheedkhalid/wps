@@ -1,13 +1,10 @@
 
 <?php
-//session_cache_limiter('private');
+////session_cache_limiter('private');
 ///* set the cache expire to 30 minutes */
 //session_cache_expire(1);
-session_start();
 date_default_timezone_set('Asia/Dubai');
 ?>
-
-<!DOCTYPE html>
 <html lang="en">
     <head>
         <title>WPS-InDepth</title>

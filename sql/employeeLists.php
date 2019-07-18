@@ -74,13 +74,16 @@ if ($result->num_rows > 0) {
 
                 echo "<td style='min-width:200px;max-width:500px;'>";
                 ?>
-                <div class="input-group" style="margin-right: 10px">
-                    <input type="text" style="width:150px" class="form-control" placeholder="Employees' acc#" value='<?php echo $rowID['employee_account']; ?>'>
-                    <div class="input-group-append">
-                        <button style="margin-right: 10px" class="btn btn-outline-success" type="button">&#x2714;</button>
-                    </div>
+                <form method="post" action="">
+                    <div class="input-group" style="margin-right: 10px">
+                        <input name="employee_account" id='employee_account' type="text" style="width:150px" class="form-control" placeholder="Employees' acc#" value='<?php echo $rowID['employee_account']; ?>'>
+                        <div class="input-group-append">
+                            <input type="text" display='none' hidden id='accountEID' name='accountEID' value='<?php echo $row['EID']; ?>'>
+                            <button style="margin-right: 10px" class="btn btn-outline-success" id="eAccountbtn" name="eAccountbtn" type="submit">&#x2714;</button>
 
-                </div>  
+                        </div>
+
+                    </div>  </form>
 
                 <?php
                 echo "</td>";
@@ -88,13 +91,15 @@ if ($result->num_rows > 0) {
         } else {
             echo "<td style='min-width:200px;max-width:500px;'>";
             ?>
-            <div class="input-group" >
-                <input type="text" style="width:150px" style="width:150px"class="form-control" placeholder="Enter account#" >
-                <div class="input-group-append">
-                    <button style="margin-right: 10px" class="btn btn-outline-danger" type="button">&#x2714;</button>
-                </div>
-            </div>  
-
+            <form method="post" action="">
+                <div class="input-group" >
+                    <input type="text" name="employee_account" id='employee_account' style="width:150px" style="width:150px"class="form-control" placeholder="Enter account#" >
+                    <div class="input-group-append">
+                        <input type="text" display='none' hidden id='accountEID' name='accountEID' value='<?php echo $row['EID']; ?>'>
+                        <button style="margin-right: 10px"  id="noAccountbtn" name="noAccountbtn" type="submit" class="btn btn-outline-danger" type="button">&#x2714;</button>
+                    </div>
+                </div>  
+            </form>
             <?php
             echo" </td>";
         }
@@ -102,29 +107,35 @@ if ($result->num_rows > 0) {
         $sqlID = "SELECT additional_info routing_no from employee_additional_details WHERE additional_field_id = 2 and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
         if ($resultID->num_rows > 0) {
-            while ($rowID = $resultID->fetch_assoc()) {echo "<td style='min-width:200px;max-width:500px;'>";
+            while ($rowID = $resultID->fetch_assoc()) {
+                echo "<td style='min-width:200px;max-width:500px;'>";
                 ?>
-                <div class="input-group" style="margin-right: 10px">
-                    <input type="text" style="width:150px" class="form-control" placeholder="Employees' routing#" value='<?php echo $rowID['routing_no']; ?>'>
-                    <div class="input-group-append">
-                        <button style="margin-right: 10px" class="btn btn-outline-success" type="button">&#x2714;</button>
-                    </div>
+                <form method="post" action="">
+                    <div class="input-group" style="margin-right: 10px">
+                        <input type="text" name="employee_routing" id='employee_routing' style="width:150px" class="form-control" placeholder="Employees' routing#" value='<?php echo $rowID['routing_no']; ?>'>
 
-                </div>  
+                        <div class="input-group-append">
+                            <input type="text" display='none' hidden id='accountEID' name='accountEID' value='<?php echo $row['EID']; ?>'>
+                            <button style="margin-right: 10px" id="routingbtn" name="routingbtn"  class="btn btn-outline-success" type="submit">&#x2714;</button>
+                        </div>
 
+                    </div>  
+                </form>
                 <?php
                 echo "</td>";
             }
         } else {
             echo "<td style='min-width:200px;max-width:500px;'>";
             ?>
+        <form method="post" action="" >
             <div class="input-group" >
-                <input type="text" style="width:150px" style="width:150px"class="form-control" placeholder="Enter  routing#" >
+                <input type="text" name="employee_routing" id='employee_routing' style="width:150px" style="width:150px"class="form-control" placeholder="Enter  routing#" >
                 <div class="input-group-append">
-                    <button style="margin-right: 10px" class="btn btn-outline-danger" type="button">&#x2714;</button>
+                    <input type="text" display='none' hidden id='accountEID' name='accountEID' value='<?php echo $row['EID']; ?>'>
+                    <button style="margin-right: 10px" id="noroutingbtn" name="noroutingbtn"  class="btn btn-outline-danger" type="submit">&#x2714;</button>
                 </div>
             </div>  
-
+        </form>
             <?php
             echo" </td>";
         }
@@ -132,18 +143,21 @@ if ($result->num_rows > 0) {
         $sqlID = "SELECT additional_info IBAN from employee_additional_details WHERE additional_field_id = 3 and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
         if ($resultID->num_rows > 0) {
-            while ($rowID = $resultID->fetch_assoc())  {
+            while ($rowID = $resultID->fetch_assoc()) {
 
 
                 echo "<td style='min-width:200px;max-width:500px;'>";
                 ?>
+<form method="post" action="" >
                 <div class="input-group" style="margin-right: 10px">
-                    <input type="text" style="width:150px" class="form-control" placeholder="Employees' IBAN#" value='<?php echo $rowID['IBAN']; ?>'>
+                    <input type="text" name="employee_iban" id='employee_iban' style="width:150px" class="form-control" placeholder="Employees' IBAN#" value='<?php echo $rowID['IBAN']; ?>'>
                     <div class="input-group-append">
-                        <button style="margin-right: 10px" class="btn btn-outline-success" type="button">&#x2714;</button>
+                        <input type="text" display='none' hidden id='accountEID' name='accountEID' value='<?php echo $row['EID']; ?>'>
+                        <button style="margin-right: 10px" id="ibanbtn" name="ibanbtn"  class="btn btn-outline-success" type="submit">&#x2714;</button>
                     </div>
 
                 </div>  
+</form>
 
                 <?php
                 echo "</td>";
@@ -151,13 +165,15 @@ if ($result->num_rows > 0) {
         } else {
             echo "<td style='min-width:200px;max-width:500px;'>";
             ?>
+<form method="post" action="" >
             <div class="input-group" >
-                <input type="text" style="width:150px" style="width:150px"class="form-control" placeholder="Enter IBAN#" >
+                <input type="text" name="employee_iban" id='employee_iban'  style="width:150px" style="width:150px"class="form-control" placeholder="Enter IBAN#" >
                 <div class="input-group-append">
-                    <button style="margin-right: 10px" class="btn btn-outline-danger" type="button">&#x2714;</button>
+                    <input type="text" display='none' hidden id='accountEID' name='accountEID' value='<?php echo $row['EID']; ?>'>
+                    <button style="margin-right: 10px" id="noibanbtn" name="noibanbtn" class="btn btn-outline-danger" type="submit">&#x2714;</button>
                 </div>
             </div>  
-
+</form>
             <?php
             echo" </td>";
         }
@@ -207,6 +223,5 @@ if ($result->num_rows > 0) {
 
 $_SESSION['employeeName'] = '';
 $conn->close();
-
-
+?>
 

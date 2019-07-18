@@ -3,7 +3,7 @@ include('../config/dbConfig.php');
 session_start();
 
 
-if (isset($_POST['aUser'] )) {
+if (isset($_POST['aUser'] )) {   
 
     $query = "select * from wps_users ";
     $result = $conn->query($query);

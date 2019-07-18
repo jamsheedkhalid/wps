@@ -1,25 +1,91 @@
 <?php
+session_start();
+include('config/dbConfig.php');
+date_default_timezone_set('Asia/Dubai');
 include('header.php');
 
+$date = date("Y-m-d H:i:s");
 
 if (!isset($_SESSION['token'])) {
-    header("Location: index.php"); //redirect to login page to secure the welcome page without login access.  
     $_SESSION['login'] = 1;
+    header("Location: index.php"); //redirect to login page to secure the welcome page without login access.  
 }
 
 if (isset($_POST['employeeName']) && $_POST['employeeName'] != '') {
     $_SESSION['employeeName'] = $_POST['employeeName'];
 }
 
+if (isset($_POST['noAccountbtn']) || isset($_POST['eAccountbtn']) || isset($_POST['routingbtn']) || isset($_POST['noroutingbtn']) || isset($_POST['ibanbtn']) || isset($_POST['noibanbtn'])) {
+  
+  
+    if (isset($_POST['eAccountbtn']) ) {
+        $sql = "UPDATE employee_additional_details SET additional_info = '$_POST[employee_account]', updated_at = '$date'"
+                . " WHERE additional_field_id = 1 AND employee_id = '$_POST[accountEID]'";
+//        echo $sql;
+        if (mysqli_query($conn, $sql)) {
+            echo "<script>alert('Updated successfully');</script>";
+        } else {
+            echo "<script>alert('Failed to update');</script>";
+        }
+    } else if (isset($_POST['noAccountbtn']))  {
+        $sql = "INSERT INTO employee_additional_details (additional_info,additional_field_id,employee_id,updated_at,created_at,school_id) VALUES('$_POST[employee_account]',"
+                . "'1','$_POST[accountEID]','$date','$date','1');";
+//        echo $sql;
+        if (mysqli_query($conn, $sql)) {
+            echo "<script>alert('Updated successfully');</script>";
+        } else {
+            echo "<script>alert('Failed to update');</script>";
+        }
+    } else if (isset($_POST['routingbtn']))  {
+        
+        $sql = "UPDATE employee_additional_details SET additional_info = '$_POST[employee_routing]', updated_at = '$date'"
+                . " WHERE additional_field_id = 2 AND employee_id = '$_POST[accountEID]'";
+//        echo $sql;
+        if (mysqli_query($conn, $sql)) {
+            echo "<script>alert('Updated successfully');</script>";
+        } else {
+            echo "<script>alert('Failed to update');</script>";
+        }
+}
+else if (isset($_POST['noroutingbtn']))  {
+        $sql = "INSERT INTO employee_additional_details (additional_info,additional_field_id,employee_id,updated_at,created_at,school_id) VALUES('$_POST[employee_routing]',"
+                . "'2','$_POST[accountEID]','$date','$date','1');";
+//        echo $sql;
+        if (mysqli_query($conn, $sql)) {
+            echo "<script>alert('Updated successfully');</script>";
+        } else {
+            echo "<script>alert('Failed to update');</script>";
+        }
+    } else if (isset($_POST['ibanbtn']))  {
+        
+        $sql = "UPDATE employee_additional_details SET additional_info = '$_POST[employee_iban]', updated_at = '$date'"
+                . " WHERE additional_field_id = 3 AND employee_id = '$_POST[accountEID]'";
+//        echo $sql;
+        if (mysqli_query($conn, $sql)) {
+            echo "<script>alert('Updated successfully');</script>";
+        } else {
+            echo "<script>alert('Failed to update');</script>";
+        }
+}else if (isset($_POST['noibanbtn']))  {
+        $sql = "INSERT INTO employee_additional_details (additional_info,additional_field_id,employee_id,updated_at,created_at,school_id) VALUES('$_POST[employee_iban]',"
+                . "'3','$_POST[accountEID]','$date','$date','1');";
+//        echo $sql;
+        if (mysqli_query($conn, $sql)) {
+            echo "<script>alert('Updated successfully');</script>";
+        } else {
+            echo "<script>alert('Failed to update');</script>";
+        }
+    }
+}
 ?>
 
 
 
 <body>
     <div  class="animate">
-        <?php
-        include('navBar.php');
-        ?>
+<?php
+include('navBar.php');
+?>
 
         <div class="container-fluid" >
             <div class="row" style="padding: 20px">  
@@ -81,26 +147,65 @@ if (isset($_POST['employeeName']) && $_POST['employeeName'] != '') {
 
         </div>
     </div>
-    
+
     <!-- Modal -->
-<div class="modal fade" id="employeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">You selection</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" id='modalBody'>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
+    <div class="modal fade" id="employeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">You selection</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id='modalBody'>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-    
+
+        <!-- Modal -->
+    <div class="modal fade" id="modalSuccess " tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">You selection</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                    Successfully updated!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+               <!-- Modal -->
+    <div class="modal fade" id="modalFail " tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">You selection</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                    Failed to update. Try again!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <!-------------------------------------java scripts------------------------------------>
@@ -135,9 +240,9 @@ if (isset($_POST['employeeName']) && $_POST['employeeName'] != '') {
     <script type="text/javascript" src="js/autoFill.js"></script>
 
 
-     
 
-<script>
+
+<!--<script>
     function highlight_row() {
     var table = document.getElementById('employees');
     var cells = table.getElementsByTagName('td');
@@ -176,7 +281,7 @@ if (isset($_POST['employeeName']) && $_POST['employeeName'] != '') {
 window.onload = highlight_row;
 
 
-</script>
+</script>-->
 
 
 

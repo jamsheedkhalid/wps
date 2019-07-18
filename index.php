@@ -1,7 +1,9 @@
 <?php
+session_start();
 include('header.php');
-if (isset($_SESSION['token']))
-    header("Location: generateSIF.php");
+if (isset($_SESSION['token'])){
+header("Location: generateSIF.php");}
+
 ?>
 
 
