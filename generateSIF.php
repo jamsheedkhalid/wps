@@ -5,8 +5,7 @@ session_start();
 include('header.php');
 if (!isset($_SESSION['token'])) {
     $_SESSION['login'] = 1;
-echo '<script> location.replace("index.php"); </script>';
-
+    echo '<script> location.replace("index.php"); </script>';
 }
 ?>
 <body>
@@ -135,7 +134,8 @@ echo '<script> location.replace("index.php"); </script>';
 
                                     <table   class="table table-striped  table-bordered  table-hover table-sm" id='nonWpsPayslips'></table>
                                 </div><br>
-                                <input id="downloadPDF" value="Download PDF" class="btn btn-primary mb-2" type="button"  onclick="$('#nonWpsPayslips').tableHTMLExport({type: 'pdf', filename: '<?php echo "Non WPS Payslips:" . $_SESSION['employerNo'] . date('ymdHis') . ".pdf"; ?>'});">
+                                <input id="downloadPDF" value="Download PDF" class="btn btn-primary mb-2" type="button"  onclick="$('#nonWpsPayslips').tableHTMLExport({type: 'pdf', filename: '<?php echo "Non WPS Payslips:" . $_SESSION['employerNo'] . date('ymdHis') . ".pdf"; ?>'});" >
+                                <input id="downloadCSV" value="Download CSV" class="btn btn-primary mb-2" type="button"  onclick="$('#nonWpsPayslips').tableHTMLExport({type: 'csv', filename: '<?php echo "Non WPS Payslips:" . $_SESSION['employerNo'] . date('ymdHis') . ".csv"; ?>'});" >
 
                             </div>
                             <table class="table" style="visibility: hidden" id='payslipsSIF'></table>
