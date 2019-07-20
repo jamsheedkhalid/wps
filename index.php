@@ -1,8 +1,15 @@
 <?php
 session_start();
 include('header.php');
-if (isset($_SESSION['token'])){
-header("Location: generateSIF.php");}
+
+if (isset($_SESSION['token']) && $_SESSION['token'] == 1){
+    echo $_SESSION['token'];
+
+echo '<script> location.replace("generateSIF.php"); </script>';
+    
+}
+
+Else {
 
 ?>
 
@@ -244,3 +251,5 @@ header("Location: generateSIF.php");}
 
 </body>
 </html>
+
+<?php } ?>

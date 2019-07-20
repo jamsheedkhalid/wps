@@ -8,7 +8,7 @@ $date = date("Y-m-d H:i:s");
 
 if (!isset($_SESSION['token'])) {
     $_SESSION['login'] = 1;
-    header("Location: index.php"); //redirect to login page to secure the welcome page without login access.  
+echo '<script> location.replace("index.php"); </script>';
 }
 
 if (isset($_POST['employeeName']) && $_POST['employeeName'] != '') {

@@ -22,6 +22,8 @@
             <li class="nav-item">
                 <a class="nav-link" id='pay'  href="payslips.php">PAYSLIPS</a>
             </li>
+            <?php if (isset($_SESSION['admin'])) { ?>
+            
             <li class="nav-item dropdown" >
                 <a class="nav-link dropdown-toggle" href="#" id="navAccess" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     ACCESS CONTROL
@@ -33,6 +35,8 @@
 
                 </div>
             </li>
+            
+            <?php } ?>
 
         </ul>
 

@@ -8,32 +8,31 @@ $user_ip = getUserIP();
 $login_time = date("H:i:s");
 $login_date = date("D,d-M-Y");
 $login = 0;
-if ($_POST['token'] != '') {  
+if ($_POST['token'] != '') {
 
     $_SESSION['user'] = $_POST['user'];
-    
-    $sql = "select users.id user,users.first_name name from users where users.username = '$_POST[user]';"; 
+
+    $sql = "select users.id user,users.first_name name from users where users.username = '$_POST[user]';";
     $result = $conn->query($sql);
     while ($row = $result->fetch_assoc()) {
         $user = $row['user'];
         $_SESSION['name'] = $row['name'];
     }
 
+    $sql = "select * from users where username = '$_POST[user]' and admin = 1;";
 
-    $sql = "SELECT *  FROM wps_users "
-            . "WHERE wps_users.username = '$_SESSION[user]' ;";
-echo $sql;
+    echo $sql;
     $result = $conn->query($sql);
-    if ($result->num_rows > 0)
+    if ($result->num_rows > 0) {
         $login = 1;
-
-    else {
-        $sql = "select * from admin_users where username = '$_POST[user]'";
+        $_SESSION['admin'] = 1;
+    } else {
+        $sql = "SELECT *  FROM wps_users "
+                . "WHERE wps_users.username = '$_SESSION[user]' ;";
         $result = $conn->query($sql);
-        if ($result->num_rows > 0)
+        if ($result->num_rows > 0) {
             $login = 1;
-
-        else {
+        } else {
             $_SESSION['noaccess'] = 1;
             header('Location: index.php');
         }
@@ -44,7 +43,7 @@ echo $sql;
 }
 
 if ($login == 1) {
-    
+
     $_SESSION['token'] = 1;
 
     $sql = "INSERT INTO wps_user_timestamps (user_id,user_name,timestamp,datestamp,ip,action) VALUES ('$_POST[user]','$_SESSION[name]','$login_time','$login_date','$user_ip','Login')";

@@ -5,12 +5,10 @@ session_start();
 include('header.php');
 if (!isset($_SESSION['token'])) {
     $_SESSION['login'] = 1;
-        header("Location: index.php"); //redirect to login page to secure the welcome page without login access.  
+echo '<script> location.replace("index.php"); </script>';
 
 }
 ?>
-
-
 <body>
     <div  class="animate">
         <?php

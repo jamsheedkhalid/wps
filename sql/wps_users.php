@@ -45,7 +45,7 @@ if (isset($_SESSION['accessUsers'])) {
         $username = '';
 
     if ($username == '')
-        $sql = " SELECT username, CONCAT(first_name,' ',last_name) name from users WHERE (admin = 1 OR employee =1 )AND is_deleted = 0 ORDER BY name,username ASC";
+        $sql = " SELECT username, CONCAT(first_name,' ',last_name) name from users WHERE (employee =1 )AND is_deleted = 0 ORDER BY name,username ASC";
     else
         $sql = " SELECT username, CONCAT(first_name,' ',last_name) name from users WHERE( username LIKE '$username%' "
                 . "OR first_name LIKE '$username%' OR last_name LIKE '$username%') "

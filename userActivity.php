@@ -5,7 +5,7 @@ include('header.php');
 
 if (!isset($_SESSION['token'])) {
     $_SESSION['login'] = 1;
-     header("Location: index.php");
+echo '<script> location.replace("index.php"); </script>';
 }
 
 if (isset($_POST['employeeName']) && $_POST['employeeName'] != '') {

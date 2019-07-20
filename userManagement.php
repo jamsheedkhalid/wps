@@ -3,8 +3,13 @@ session_start();
 include('header.php');
 include('config/dbConfig.php');
 
+if (!isset($_SESSION['token'])) {
+    $_SESSION['login'] = 1;
+echo '<script> location.replace("index.php"); </script>';
+}
+
 if (isset($_POST['grantAccess']) && isset($_POST['user'])) {
-    $sql = "SELECT id, username, CONCAT (first_name,' ',last_name) name FROM users WHERE username = '$_POST[user]' ";
+    $sql = "SELECT id, username, CONCAT (first_name,' ',last_name) name FROM users WHERE username = '$_POST[user]' AND admin != 1";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {

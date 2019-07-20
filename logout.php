@@ -16,6 +16,7 @@ if (mysqli_query($conn, $sql)) {
     echo "Error: " . $sql . "" . mysqli_error($conn);
 }
 $conn->close();
+session_unset();
 session_destroy();
 header("Location: index.php"); //use for the redirection to some page  
 
