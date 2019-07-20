@@ -23,21 +23,21 @@ $sql = "SELECT
     employee_payslips.total_earnings salary,
     employee_payslips.days_count leaveCount,
     (payslips_date_ranges.end_date - payslips_date_ranges.start_date) + 1    workingDays,
-    employee_payslips.total_deductions deductions,
+    ROUND(ROUND(employee_payslips.total_deductions,0),2) deductions,
     payslips_date_ranges.start_date startDate,
     payslips_date_ranges.end_date endDate,
-    ROUND((
+    ROUND(ROUND((
         employee_payslip_categories.amount -(
             employee_payslips.total_deductions / 2
         )
-    ),2) BasicSalary,
-    ROUND((
+    ),0),2) BasicSalary,
+    ROUND(ROUND((
         (
             employee_payslips.total_earnings - employee_payslip_categories.amount
         ) -(
             employee_payslips.total_deductions / 2
         )
-    ),2) variableSalary,
+    ),0),2) variableSalary,
     payroll_categories.name payrollCategory
 FROM
     employees
