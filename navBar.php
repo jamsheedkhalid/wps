@@ -29,7 +29,7 @@
                 <div class="dropdown-menu" aria-labelledby="navAccess">
                     <a id='navUserActivity' class="dropdown-item" href="userActivity.php">User Activity</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" id="" href="userManagement.php">User Management</a>
+                    <a  id="navUserManagement" class="dropdown-item" id="" href="userManagement.php">User Management</a>
 
                 </div>
             </li>

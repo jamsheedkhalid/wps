@@ -37,6 +37,10 @@ if (!isset($_SESSION['token'])) {
 if (isset($_POST['employeeName']) && $_POST['employeeName'] != '') {
     $_SESSION['employeeName'] = $_POST['employeeName'];
 }
+
+if (isset($_POST['accessUsers']) ) {
+    $_SESSION['accessUsers'] = 1;
+}
 ?>
 
 
@@ -121,8 +125,8 @@ if (isset($_POST['employeeName']) && $_POST['employeeName'] != '') {
     <script type="text/javascript">
 
         document.getElementById("navAccess").classList.add('active');
-        document.getElementById("navUserActivity").style.background = 'black';
-        document.getElementById("navUserActivity").style.color = 'whitesmoke';
+        document.getElementById("navUserManagement").style.background = 'black';
+        document.getElementById("navUserManagement").style.color = 'whitesmoke';
 
 
         var xmlhttp = new XMLHttpRequest();

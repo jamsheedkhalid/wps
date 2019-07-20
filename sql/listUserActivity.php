@@ -9,14 +9,14 @@ if (isset($_SESSION['employeeName']) && ($_SESSION['employeeName']) != '') {
     $username = '';
 
 
-$sql = " SELECT DISTINCT  user_id, user_name, timestamp, datestamp,ip, action from wps_user_timestamps ORDER BY id DESC";
+$sql = " SELECT DISTINCT  user_id, user_name, timestamp, datestamp,ip, action from wps_user_timestamps ORDER BY datestamp,timestamp DESC";
 
 
 if ($username != '')
     $sql = " SELECT DISTINCT  user_id, user_name, timestamp, datestamp, action from wps_user_timestamps WHERE user_id LIKE '%$username%' "
-            . "OR user_name LIKE '%$username%' ORDER BY id DESC";
+            . "OR user_name LIKE '%$username%' ORDER BY datestamp,timestamp DESC";
 
-
+//echo $sql;
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {

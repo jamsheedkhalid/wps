@@ -3,7 +3,7 @@ include('../config/dbConfig.php');
 session_start();
 
 
-if (isset($_POST['aUser'] )) {   
+if (isset($_SESSION['accessUsers'])) {  
 
     $query = "select * from wps_users ";
     $result = $conn->query($query);
@@ -32,13 +32,14 @@ if (isset($_POST['aUser'] )) {
             echo "</td></tr>";
         }
         echo "</tbody>";
-    }
+    } else {
     echo "<div class=alert alert-success>"
     . "<strong style=color:red;>No Users Found!</strong> "
     . "<a href=# class=clos data-dismiss=alert>&times;</a>"
-    . "</div>";
+    . "</div>";}
+    unset($_SESSION['accessUsers']);
 } else {
-    if (isset($_SESSION['employeeName']) && ($_SESSION['employeeName']) != '') {
+    if (isset($_SESSION['employeeName']) && ($_SESSION['employeeName']) != '') { 
         $username = $_SESSION['employeeName'];
     } else
         $username = '';
