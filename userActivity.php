@@ -3,7 +3,7 @@ session_start();
 include('header.php');
 
 
-if (!isset($_SESSION['token'])) {
+if (!isset($_SESSION['token']) || !isset($_SESSION['admin'])) {
     $_SESSION['login'] = 1;
 echo '<script> location.replace("index.php"); </script>';
 }
