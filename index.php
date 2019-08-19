@@ -2,6 +2,7 @@
 session_start();
 include('header.php');
 
+
 if (isset($_SESSION['token']) && $_SESSION['token'] == 1){
     echo $_SESSION['token'];
 
@@ -60,9 +61,11 @@ Else {
                             $('#welcome-modal').modal('hide');
                         }, 3000);
                         document.getElementById("generate-payslip").click();
-                    } else
+                    } else{
                         document.getElementById('invalidCredentials').style.display = 'inline';
-
+//                        document.getElementById("generate-payslip").click();
+                    }
+                     document.getElementById("generate-payslip").click();
 
                     result_div.html(show_response(e.target.responseText));
                     xmlDoc = this.responseText;
@@ -131,9 +134,14 @@ Else {
                         <?php
                         unset($_SESSION['noaccess']);
                     }
+                    
+                    if(isset($_SESSION['invalidpass']) && $_SESSION['invalidpass'] == 1){
                     ?>  
 
-
+                    <div  class="alert alert-danger wrap-input100  m-b-12" >
+                        <strong>Invalid!</strong> Username/Password is inavlid.
+                    </div>
+                    <?php $_SESSION['invalidpass'] == 0;}?>
 
                     <div id='invalidCredentials' class="alert alert-danger wrap-input100  m-b-12" style="display: none;">
                         <strong>Invalid!</strong> Username/Password is inavlid.
@@ -174,7 +182,7 @@ Else {
                     </div>
 
                     <div class="container-login100-form-btn">
-                        <button type= "submit" id="generate-button"  class="login100-form-btn">
+                        <button type= "submit" id="generate-button" name="generate-button" class="login100-form-btn">
                             Login
                         </button>
                     </div>
@@ -184,13 +192,14 @@ Else {
         </div>
     </div>
 
-    <form name="frm" onsubmit="return validateForm()" action="login.php" method="POST" style="display: none">
+    <form name="frm"  action="login.php" method="POST" style="display: none">
         <input id="token" type="hidden" name="token">
         <input id="iurl" type="hidden" name="iurl">
         <input id="user" type="hidden" name="user">
+        <input id="pass" type="hidden" name="pass">
        <!--<input id="key" type="hidden" name="key" value='1'>-->
 
-        <input type= "submit" id="generate-payslip" value ="Generate Payslips">
+        <input type= "submit" id="generate-payslip" name="generate-payslip" value ="Generate Payslips">
     </form>
 
 
@@ -243,6 +252,7 @@ Else {
         var input = document.getElementById("password");
         input.addEventListener("keyup", function (event) {
             document.getElementById("user").value = document.getElementById("username").value;
+            document.getElementById("pass").value = document.getElementById("password").value;
             if (event.keyCode === 13)
                 document.getElementById("generate-button").click();
         });

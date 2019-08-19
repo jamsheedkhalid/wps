@@ -47,10 +47,11 @@ date_default_timezone_set('Asia/Dubai');
         <script src="js/jquery.tabletocsv.js"></script>
         <script src="js/gen_validatorv4.js"></script>
         <script src="js/autoFill.js"></script>
+        <script src="js/print.min.js"></script>
         <script src="js/tableHTMLExport.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.5/jspdf.plugin.autotable.min.js"></script>
-        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.js"></script>
   
         <link href='https://fonts.googleapis.com/css' rel='stylesheet'>
         <link rel="stylesheet" href="css/style.css">

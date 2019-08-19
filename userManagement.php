@@ -5,11 +5,11 @@ include('config/dbConfig.php');
 
 if (!isset($_SESSION['token']) || !isset($_SESSION['admin'])) {
     $_SESSION['login'] = 1;
-echo '<script> location.replace("index.php"); </script>';
+    echo '<script> location.replace("index.php"); </script>';
 }
 
 if (isset($_POST['grantAccess']) && isset($_POST['user'])) {
-    $sql = "SELECT id, username, CONCAT (first_name,' ',last_name) name FROM users WHERE username = '$_POST[user]' AND admin != 1";
+    $sql = "SELECT id, username, CONCAT (first_name,' ',last_name) name FROM users WHERE username = '$_POST[user]' ";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
@@ -28,11 +28,28 @@ if (isset($_POST['grantAccess']) && isset($_POST['user'])) {
 }
 
 if (isset($_POST['denyAccess'])) {
-    $sql = "DELETE FROM wps_users WHERE username = '$_POST[denyuser]' ";
+    $sql = "DELETE FROM wps_users WHERE username = '$_POST[denyuser]' AND is_deletable = '1'";
     mysqli_query($conn, $sql);
 }
 
+if (isset($_POST['deleteAdmin'])) {
+    $sql = "DELETE FROM wps_admin_user WHERE user_name = '$_POST[deladmin]' ";
+    mysqli_query($conn, $sql);
+}
 
+if (isset($_POST['changepass'])) {
+    $newpassword = $_POST['newPass'];
+    $userpassword = password_hash($newpassword, PASSWORD_BCRYPT);
+
+    $sql = "UPDATE wps_admin_user SET user_password = '$userpassword' WHERE user_name = '$_POST[changeadmin]';";
+//    echo $sql;
+    if (mysqli_query($conn, $sql)) {
+        echo "<script>alert('Password Changed!')</script>";
+    } else {
+        echo "<script>alert('Unable to change password!')</script>";
+        $fail = 1;
+    }
+}
 
 if (!isset($_SESSION['token'])) {
     header("Location: index.php"); //redirect to login page to secure the welcome page without login access.  
@@ -43,8 +60,13 @@ if (isset($_POST['employeeName']) && $_POST['employeeName'] != '') {
     $_SESSION['employeeName'] = $_POST['employeeName'];
 }
 
-if (isset($_POST['accessUsers']) ) {
+if (isset($_POST['accessUsers'])) {
     $_SESSION['accessUsers'] = 1;
+}
+
+
+if (isset($_POST['adminUserbtn'])) {
+    $_SESSION['adminUsers'] = 1;
 }
 ?>
 
@@ -91,6 +113,15 @@ if (isset($_POST['accessUsers']) ) {
                             <button   type="submit" style="margin-left: 20px" name='accessUsers' id="accessUsers" class="btn btn-primary mb-2">View WPS Users</button>
                         </form>
                     </div>
+
+                    <?php if(isset($_SESSION['viewadmins'])) { ?>
+                    <div class="col-sm-2" style="margin-top: 25px;" >
+                        <form action="" method="POST"  autocomplete="off">
+                            <input  type=text style="display: none" value="true" name="adminUsers" id ="adminUsers">
+                            <button   type="submit" style="margin-left: 20px" name='adminUserbtn' id="adminUserbtn" class="btn btn-primary mb-2">View Admin Users</button>
+                        </form>
+                    </div>
+                    <?php } ?>
                 </div>
 
 

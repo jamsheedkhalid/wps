@@ -13,7 +13,7 @@ $sql = " SELECT DISTINCT  user_id, user_name, timestamp, datestamp,ip, action fr
 
 
 if ($username != '')
-    $sql = " SELECT DISTINCT  user_id, user_name, timestamp, datestamp, action from wps_user_timestamps WHERE user_id LIKE '%$username%' "
+    $sql = " SELECT DISTINCT  user_id, user_name, timestamp, datestamp, ip, action from wps_user_timestamps WHERE user_id LIKE '%$username%' "
             . "OR user_name LIKE '%$username%' ORDER BY datestamp,timestamp DESC";
 
 //echo $sql;

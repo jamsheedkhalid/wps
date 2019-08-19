@@ -32,6 +32,10 @@
                     <a id='navUserActivity' class="dropdown-item" href="userActivity.php">User Activity</a>
                     <div class="dropdown-divider"></div>
                     <a  id="navUserManagement" class="dropdown-item" id="" href="userManagement.php">User Management</a>
+                    <div class="dropdown-divider"></div>
+                    <a  id="navAddAdmin" class="dropdown-item" id="" href="createAdmin.php">Add new Admin user</a>
+                    <div class="dropdown-divider"></div>
+                    <a  id="navchangePassword" class="dropdown-item" id="" href="changeAdminPassword.php">Change Password</a>
 
                 </div>
             </li>

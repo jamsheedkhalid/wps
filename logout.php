@@ -6,7 +6,7 @@ session_start();
 $user_ip = getUserIP();
 date_default_timezone_set('Asia/Dubai');
 $login_time = date("H:i:s");
-$login_date = date("D,d-M-Y");
+$login_date = date("d-M-Y");
 echo $_SERVER['user'];
 
     $sql = "INSERT INTO wps_user_timestamps (user_id,user_name,timestamp,datestamp,ip,action) VALUES ('$_SESSION[user]','$_SESSION[name]','$login_time','$login_date','$user_ip','Logout')";
