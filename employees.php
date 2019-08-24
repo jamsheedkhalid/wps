@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('config/dbConfig.php');
+
 date_default_timezone_set('Asia/Dubai');
 include('header.php');
 
@@ -20,7 +21,7 @@ if (isset($_POST['noAccountbtn']) || isset($_POST['eAccountbtn']) || isset($_POS
   
     if (isset($_POST['eAccountbtn']) ) {
         $sql = "UPDATE employee_additional_details SET additional_info = '$_POST[employee_account]', updated_at = '$date'"
-                . " WHERE additional_field_id = 1 AND employee_id = '$_POST[accountEID]'";
+                . " WHERE additional_field_id = '$_SESSION[Emp_Uniq_ID]' AND employee_id = '$_POST[accountEID]'";
 //        echo $sql;
         if (mysqli_query($conn, $sql)) {
             echo "<script>alert('Updated successfully');</script>";
@@ -29,7 +30,7 @@ if (isset($_POST['noAccountbtn']) || isset($_POST['eAccountbtn']) || isset($_POS
         }
     } else if (isset($_POST['noAccountbtn']))  {
         $sql = "INSERT INTO employee_additional_details (additional_info,additional_field_id,employee_id,updated_at,created_at,school_id) VALUES('$_POST[employee_account]',"
-                . "'1','$_POST[accountEID]','$date','$date','1');";
+                . "'$_SESSION[Emp_Uniq_ID],'$_POST[accountEID]','$date','$date','1');";
 //        echo $sql;
         if (mysqli_query($conn, $sql)) {
             echo "<script>alert('Updated successfully');</script>";
@@ -39,7 +40,7 @@ if (isset($_POST['noAccountbtn']) || isset($_POST['eAccountbtn']) || isset($_POS
     } else if (isset($_POST['routingbtn']))  {
         
         $sql = "UPDATE employee_additional_details SET additional_info = '$_POST[employee_routing]', updated_at = '$date'"
-                . " WHERE additional_field_id = 2 AND employee_id = '$_POST[accountEID]'";
+                . " WHERE additional_field_id = '$_SESSION[Agent_ID]' AND employee_id = '$_POST[accountEID]'";
 //        echo $sql;
         if (mysqli_query($conn, $sql)) {
             echo "<script>alert('Updated successfully');</script>";
@@ -49,7 +50,7 @@ if (isset($_POST['noAccountbtn']) || isset($_POST['eAccountbtn']) || isset($_POS
 }
 else if (isset($_POST['noroutingbtn']))  {
         $sql = "INSERT INTO employee_additional_details (additional_info,additional_field_id,employee_id,updated_at,created_at,school_id) VALUES('$_POST[employee_routing]',"
-                . "'2','$_POST[accountEID]','$date','$date','1');";
+                . "'$_SESSION[Agent_ID]','$_POST[accountEID]','$date','$date','1');";
 //        echo $sql;
         if (mysqli_query($conn, $sql)) {
             echo "<script>alert('Updated successfully');</script>";
@@ -59,7 +60,7 @@ else if (isset($_POST['noroutingbtn']))  {
     } else if (isset($_POST['ibanbtn']))  {
         
         $sql = "UPDATE employee_additional_details SET additional_info = '$_POST[employee_iban]', updated_at = '$date'"
-                . " WHERE additional_field_id = 3 AND employee_id = '$_POST[accountEID]'";
+                . " WHERE additional_field_id = '$_SESSION[Emp_IBAN]' AND employee_id = '$_POST[accountEID]'";
 //        echo $sql;
         if (mysqli_query($conn, $sql)) {
             echo "<script>alert('Updated successfully');</script>";
@@ -68,7 +69,7 @@ else if (isset($_POST['noroutingbtn']))  {
         }
 }else if (isset($_POST['noibanbtn']))  {
         $sql = "INSERT INTO employee_additional_details (additional_info,additional_field_id,employee_id,updated_at,created_at,school_id) VALUES('$_POST[employee_iban]',"
-                . "'3','$_POST[accountEID]','$date','$date','1');";
+                . "'$_SESSION[Emp_IBAN]','$_POST[accountEID]','$date','$date','1');";
 //        echo $sql;
         if (mysqli_query($conn, $sql)) {
             echo "<script>alert('Updated successfully');</script>";

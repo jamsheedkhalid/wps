@@ -3,6 +3,7 @@
 include('../config/dbConfig.php');
 
 session_start();
+include('../bankinfo.php');
 $flag = 0;
 $thead = 1;
 if (isset($_SESSION['salaryDate']) && ($_SESSION['salaryDate']) != '') {
@@ -62,11 +63,11 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
 
 
-
+$basic_total = $variable_total = $grant_total = 0.0;
 
     while ($row = $result->fetch_assoc()) {
         $iban = $routing_no = $employee_account = '';
-        $sqlID = "SELECT additional_info employee_account from employee_additional_details WHERE additional_field_id = 1 and employee_id = '$row[EID]' ";
+        $sqlID = "SELECT additional_info employee_account from employee_additional_details WHERE additional_field_id = '$_SESSION[Emp_Uniq_ID]' and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
         if ($resultID->num_rows > 0) {
             while ($rowID = $resultID->fetch_assoc()) {
@@ -75,7 +76,7 @@ if ($result->num_rows > 0) {
         }
 
 
-        $sqlID = "SELECT additional_info routing_no from employee_additional_details WHERE additional_field_id = 2 and employee_id = '$row[EID]' ";
+        $sqlID = "SELECT additional_info routing_no from employee_additional_details WHERE additional_field_id = '$_SESSION[Agent_ID]' and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
         if ($resultID->num_rows > 0) {
             while ($rowID = $resultID->fetch_assoc()) {
@@ -84,7 +85,7 @@ if ($result->num_rows > 0) {
         }
 
 
-        $sqlID = "SELECT additional_info IBAN from employee_additional_details WHERE additional_field_id = 3 and employee_id = '$row[EID]' ";
+        $sqlID = "SELECT additional_info IBAN from employee_additional_details WHERE additional_field_id = '$_SESSION[Emp_IBAN]' and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
         if ($resultID->num_rows > 0) {
             while ($rowID = $resultID->fetch_assoc()) {
@@ -126,13 +127,19 @@ if ($result->num_rows > 0) {
             . "<td>" . $row["endDate"] . "</td>"
             . "<td>" . $row["workingDays"] . "</td>";
 
-            if ($row["BasicSalary"] != NULL)
+            if ($row["BasicSalary"] != NULL){
                 echo "<td>" . $row["BasicSalary"] . "</td>";
+                $grant_total += $row["BasicSalary"];
+                $basic_total += $row["BasicSalary"];
+            }
             else
                 echo "<td> 0.00 </td>";
 
-            if ($row["variableSalary"] != NULL)
+            if ($row["variableSalary"] != NULL){
                 echo "<td>" . $row["variableSalary"] . "</td>";
+                 $grant_total += $row["variableSalary"];
+                $variable_total += $row["variableSalary"];
+            }
             else
                 echo "<td> 0.00 </td>";
 
@@ -142,10 +149,15 @@ if ($result->num_rows > 0) {
                 echo "<td>" . $row["leaveCount"] . "</td>";
             else
                 echo "<td> 0 </td></tr>";
-
+            
+           
             echo "</tbody>";
+             
+            
         }
-    }
+        
+    } echo "<thead  style='font-size:15px;  class = 'table table-striped  table-bordered  table-hover table-sm' class='table-warning'><th></th><th></th><th></th><th></th><th></th> <th></th><th>Total Basic</th><th>AED " . $basic_total . "</th><th>Total Variable</th><th>AED ". $variable_total .
+            "</th><th>Grant Total</th><th>AED " . $grant_total . "</th></thead>"; 
 } else {
 
     $flag = 1;

@@ -1,6 +1,9 @@
 <?php
 session_start();
 include('header.php');
+include('bankinfo.php');
+
+
 
 
 if (isset($_SESSION['token']) && $_SESSION['token'] == 1){

@@ -4,6 +4,7 @@ include('../config/dbConfig.php');
 date_default_timezone_set('Asia/Dubai');
 
 session_start();
+include('../bankinfo.php');
 
 if (isset($_SESSION['salaryDate']) && ($_SESSION['salaryDate']) != '') {
     $salaryDate = $_SESSION['salaryDate'];
@@ -88,14 +89,14 @@ if ($result->num_rows > 0) {
 
 
 
-        $sqlID = "SELECT additional_info employee_account from employee_additional_details WHERE additional_field_id = 1 and employee_id = '$row[EID]' ";
+        $sqlID = "SELECT additional_info employee_account from employee_additional_details WHERE additional_field_id = '$_SESSION[Emp_Uniq_ID]' and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
         if ($resultID->num_rows > 0) {
             while ($rowID = $resultID->fetch_assoc()) {
                 $employee_account = $rowID["employee_account"];
             }
         }
-        $sqlID = "SELECT additional_info routing_no from employee_additional_details WHERE additional_field_id = 2 and employee_id = '$row[EID]' ";
+        $sqlID = "SELECT additional_info routing_no from employee_additional_details WHERE additional_field_id = '$_SESSION[Agent_ID]' and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
         if ($resultID->num_rows > 0) {
             while ($rowID = $resultID->fetch_assoc()) {
@@ -103,7 +104,7 @@ if ($result->num_rows > 0) {
             }
         }
 
-        $sqlID = "SELECT additional_info IBAN from employee_additional_details WHERE additional_field_id = 3 and employee_id = '$row[EID]' ";
+        $sqlID = "SELECT additional_info IBAN from employee_additional_details WHERE additional_field_id = '$_SESSION[Emp_IBAN]' and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
         if ($resultID->num_rows > 0) {
             while ($rowID = $resultID->fetch_assoc()) {

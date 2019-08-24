@@ -109,12 +109,12 @@ if (!isset($_SESSION['token'])) {
                             </div>
 
                             <div class="col-sm-12" >
-                                <div  style="overflow-x:auto;overflow-y:auto;height: 50vh;">       
+                                <div id="payslipsdiv"  style="overflow-x:auto;overflow-y:auto;height: 50vh;">       
                                     <table class="table table-striped  table-bordered  table-hover table-sm" id='payslips' ></table>
                                 </div>
                                 <br>
 
-                                <input id="downloadPDFPayslips" value="Download PDF" class="btn btn-primary mb-2" type="button"  onclick="$('#payslips').tableHTMLExport({type: 'pdf', filename: '<?php echo "WPS Payslips:" . $_SESSION['employerNo'] . date('ymdHis') . ".pdf"; ?>'});">
+                                <input id="downloadPDFPayslips" value="Download PDF" class="btn btn-primary mb-2" type="button"  onclick="$('#payslipsdiv').tableHTMLExport({type: 'pdf', filename: '<?php echo "WPS Payslips:" . $_SESSION['employerNo'] . date('ymdHis') . ".pdf"; ?>'});">
                                 <input id="viewSIF" value="Generate SIF" class="btn btn-primary mb-2" type="button" >
                                 <input id="downloadSIF" value="Download SIF" class="btn btn-primary mb-2" type="button" style="visibility: hidden" onclick="$('#payslipsSIF').tableToCsv({outputheaders: false, fileName: '<?php echo $_SESSION['employerNo'] . date('ymdHis'); ?>'});">
 
@@ -131,8 +131,10 @@ if (!isset($_SESSION['token'])) {
 
                             <div  class="col-sm-12">   
                                 <div style="overflow-x:auto;overflow-y:auto;height: 80vh;" >
-
+                                    
                                     <table   class="table table-striped  table-bordered  table-hover table-sm" id='nonWpsPayslips'></table>
+                                
+                                
                                 </div><br>
                                 <input id="downloadPDF" value="Download PDF" class="btn btn-primary mb-2" type="button"  onclick="$('#nonWpsPayslips').tableHTMLExport({type: 'pdf', filename: '<?php echo "Non WPS Payslips:" . $_SESSION['employerNo'] . date('ymdHis') . ".pdf"; ?>'});" >
                                 <input id="downloadCSV" value="Download CSV" class="btn btn-primary mb-2" type="button"  onclick="$('#nonWpsPayslips').tableHTMLExport({type: 'csv', filename: '<?php echo "Non WPS Payslips:" . $_SESSION['employerNo'] . date('ymdHis') . ".csv"; ?>'});" >

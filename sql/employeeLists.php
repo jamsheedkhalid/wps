@@ -1,7 +1,7 @@
 <?php
 include('../config/dbConfig.php');
-
 session_start();
+include('../bankinfo.php');
 
 
 if (isset($_SESSION['employeeName']) && ($_SESSION['employeeName']) != '') {
@@ -66,7 +66,7 @@ if ($result->num_rows > 0) {
         echo "<tr><td>" . $row["employee_number"] . "</td>"
         . "<td>" . $row["name"] . "</td>";
 
-        $sqlID = "SELECT additional_info employee_account from employee_additional_details WHERE additional_field_id = 1 and employee_id = '$row[EID]' ";
+        $sqlID = "SELECT additional_info employee_account from employee_additional_details WHERE additional_field_id = '$_SESSION[Emp_Uniq_ID]' and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
         if ($resultID->num_rows > 0) {
             while ($rowID = $resultID->fetch_assoc()) {
@@ -104,7 +104,7 @@ if ($result->num_rows > 0) {
             echo" </td>";
         }
 
-        $sqlID = "SELECT additional_info routing_no from employee_additional_details WHERE additional_field_id = 2 and employee_id = '$row[EID]' ";
+        $sqlID = "SELECT additional_info routing_no from employee_additional_details WHERE additional_field_id = '$_SESSION[Agent_ID]' and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
         if ($resultID->num_rows > 0) {
             while ($rowID = $resultID->fetch_assoc()) {
@@ -140,7 +140,7 @@ if ($result->num_rows > 0) {
             echo" </td>";
         }
 
-        $sqlID = "SELECT additional_info IBAN from employee_additional_details WHERE additional_field_id = 3 and employee_id = '$row[EID]' ";
+        $sqlID = "SELECT additional_info IBAN from employee_additional_details WHERE additional_field_id = '$_SESSION[Emp_IBAN]' and employee_id = '$row[EID]' ";
         $resultID = $conn->query($sqlID);
         if ($resultID->num_rows > 0) {
             while ($rowID = $resultID->fetch_assoc()) {
@@ -160,8 +160,8 @@ if ($result->num_rows > 0) {
 </form>
 
                 <?php
-                echo "</td>";
-            }
+               echo "</td>";
+             }
         } else {
             echo "<td style='min-width:200px;max-width:500px;'>";
             ?>
@@ -175,7 +175,7 @@ if ($result->num_rows > 0) {
             </div>  
 </form>
             <?php
-            echo" </td>";
+            echo "</td>";
         }
 
 
