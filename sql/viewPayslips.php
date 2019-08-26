@@ -23,25 +23,16 @@ $sql = "SELECT
      employee_payslips.is_approved approve,
       employee_payslips.is_rejected rejected,
        employee_payslips.reason reason,
-    employee_payslips.total_earnings salary,
+    ROUND(ROUND(employee_payslips.total_earnings,0),2) salary,
     employee_payslips.days_count leaveCount,
     (payslips_date_ranges.end_date - payslips_date_ranges.start_date) + 1    workingDays,
-   ROUND(ROUND( employee_payslips.total_deductions,0),2) deductions,
+    ROUND(ROUND(employee_payslips.total_deductions,0),2) deductions,
     payslips_date_ranges.start_date startDate,
     payslips_date_ranges.end_date endDate,
-    ROUND(ROUND((
-        employee_payslip_categories.amount -(
-            employee_payslips.total_deductions / 2
-        )
-    ),0),2) BasicSalary,
-    ROUND(ROUND((
-        (
-            employee_payslips.total_earnings - employee_payslip_categories.amount
-        ) -(
-            employee_payslips.total_deductions / 2
-        )
-    ),0),2) variableSalary,
-    payroll_categories.name payrollCategory
+    ROUND(ROUND(employee_payslip_categories.amount,0),2)  BasicSalary,
+    ROUND(ROUND(employee_payslips.total_earnings - employee_payslip_categories.amount,0),2) variableSalary,
+    ROUND(ROUND(employee_payslips.lop,0),2) lopAmount,
+    payroll_categories.name payrollCategoryy
 FROM
     employees
 LEFT JOIN employee_payslips ON employees.id = employee_payslips.employee_id
@@ -155,14 +146,52 @@ if ($result->num_rows > 0) {
             . "<td>" . $row["endDate"] . "</td>"
             . "<td>" . $row["workingDays"] . "</td>";
 
-            if ($row["BasicSalary"] != NULL)
+            if ($row["BasicSalary"] != NULL) {
+                if ($row["leaveCount"] != NULL) {
+                    $deduct = round(($row["BasicSalary"] * $row["leaveCount"]) / 30);
+                    $row["BasicSalary"] = $row["BasicSalary"] - $deduct;
+                }
+
+                if ($row["deductions"] != 0.00) {
+                    $deduction = round(($row["deductions"] - $row["lopAmount"]) / 2);
+
+                    $row["BasicSalary"] = $row["BasicSalary"] - $deduction;
+                }
+            }
+
+
+            if ($row["variableSalary"] != NULL) {
+
+                if ($row["leaveCount"] != NULL) {
+
+                    $deduct = round(($row["variableSalary"] * $row["leaveCount"]) / 30);
+                    $row["variableSalary"] = $row["variableSalary"] - $deduct;
+                }
+                if ($row["deductions"] != 0.00) {
+                    $deduction = round(($row["deductions"] - $row["lopAmount"]) / 2);
+
+                    $row["variableSalary"] = $row["variableSalary"] - $deduction;
+                }
+            }
+
+            if ($row["BasicSalary"] < 0) {
+                $row["variableSalary"] = $row["variableSalary"] + $row["BasicSalary"];
+            } else if ($row["variableSalary"] < 0) {
+                $row["BasicSalary"] = $row["BasicSalary"] + $row["variableSalary"];
+            }
+
+            if ($row["BasicSalary"] != NULL) {
+                $row["BasicSalary"] = sprintf("%.2f", $row["BasicSalary"]);
                 echo "<td>" . $row["BasicSalary"] . "</td>";
-            else
+
+            } else
                 echo "<td> 0.00 </td>";
 
-            if ($row["variableSalary"] != NULL)
+            if ($row["variableSalary"] != NULL) {
+                $row["variableSalary"] = sprintf("%.2f", $row["variableSalary"]);
                 echo "<td>" . $row["variableSalary"] . "</td>";
-            else
+
+            } else
                 echo "<td> 0.00 </td>";
 
             echo "<td>" . $row["deductions"] . "</td>";

@@ -21,15 +21,15 @@ $sql = "SELECT
     employees.first_name first_name,
     employees.middle_name middle_name,
     employees.last_name last_name,
-    employee_payslips.total_earnings salary,
+    ROUND(ROUND(employee_payslips.total_earnings,0),2) salary,
     employee_payslips.days_count leaveCount,
     (payslips_date_ranges.end_date - payslips_date_ranges.start_date) + 1    workingDays,
-    employee_payslips.total_deductions deductions,
+    ROUND(ROUND(employee_payslips.total_deductions,0),2) deductions,
     payslips_date_ranges.start_date startDate,
     payslips_date_ranges.end_date endDate,
-    employee_payslip_categories.amount  BasicSalary,
-    employee_payslips.total_earnings - employee_payslip_categories.amount variableSalary,
-    employee_payslips.lop lopAmount,
+    ROUND(ROUND(employee_payslip_categories.amount,0),2)  BasicSalary,
+    ROUND(ROUND(employee_payslips.total_earnings - employee_payslip_categories.amount,0),2) variableSalary,
+    ROUND(ROUND(employee_payslips.lop,0),2) lopAmount,
     payroll_categories.name payrollCategory
 FROM
     employees
@@ -119,42 +119,33 @@ if ($result->num_rows > 0) {
             . "<td>" . $row["workingDays"] . "</td>";
 
             if ($row["BasicSalary"] != NULL) {
-                $basicpay =  $row["BasicSalary"];
                 if ($row["leaveCount"] != NULL) {
-                    $row["BasicSalary"] = ($row["BasicSalary"] * $row["leaveCount"]) / 30;
+                    $deduct = round(($row["BasicSalary"] * $row["leaveCount"]) / 30);
+                    $row["BasicSalary"] = $row["BasicSalary"] - $deduct;
                 }
 
-                if ($row["deductions"] != 0.00){
-                    $deduction = ($row["deductions"] - $row["lopAmount"]) / 2;
+                if ($row["deductions"] != 0.00) {
+                    $deduction = round(($row["deductions"] - $row["lopAmount"]) / 2);
 
-                $row["BasicSalary"] = $row["BasicSalary"] - $deduction;}
-
-
-//                echo "<td>" . $row["BasicSalary"] . "</td>";
-//                $grant_total += $row["BasicSalary"];
-//                $basic_total += $row["BasicSalary"];
+                    $row["BasicSalary"] = $row["BasicSalary"] - $deduction;
+                }
             }
 
-//            else
-//                echo "<td> 0.00 </td>";
 
             if ($row["variableSalary"] != NULL) {
-                
+
                 if ($row["leaveCount"] != NULL) {
-                    
-                    $row["variableSalary"] = ($row["variableSalary"] * $row["leaveCount"]) / 30;
+
+                    $deduct = round(($row["variableSalary"] * $row["leaveCount"]) / 30);
+                    $row["variableSalary"] = $row["variableSalary"] - $deduct;
                 }
-                if ($row["deductions"] != 0.00){
-                    $deduction = ($row["deductions"] - $row["lopAmount"]) / 2;
+                if ($row["deductions"] != 0.00) {
+                    $deduction = round(($row["deductions"] - $row["lopAmount"]) / 2);
 
-                $row["variableSalary"] = $row["variableSalary"] - $deduction;}
-
-//                echo "<td>" . $row["variableSalary"] . "</td>";
-//                 $grant_total += $row["variableSalary"];
-//                $variable_total += $row["variableSalary"];
+                    $row["variableSalary"] = $row["variableSalary"] - $deduction;
+                }
             }
-//            else
-//                echo "<td> 0.00 </td>";
+
             if ($row["BasicSalary"] < 0) {
                 $row["variableSalary"] = $row["variableSalary"] + $row["BasicSalary"];
             } else if ($row["variableSalary"] < 0) {
@@ -162,15 +153,16 @@ if ($result->num_rows > 0) {
             }
 
             if ($row["BasicSalary"] != NULL) {
-                echo "<td>" .ROUND(ROUND($row["BasicSalary"],0),2). "</td>";
+                $row["BasicSalary"] = sprintf("%.2f", $row["BasicSalary"]);
+                echo "<td>" . $row["BasicSalary"] . "</td>";
                 $grant_total += $row["BasicSalary"];
                 $basic_total += $row["BasicSalary"];
             } else
                 echo "<td> 0.00 </td>";
-            
-            if ($row["variableSalary"] != NULL) {
 
-                echo "<td>" .ROUND(ROUND($row["variableSalary"],0),2). "</td>";
+            if ($row["variableSalary"] != NULL) {
+                $row["variableSalary"] = sprintf("%.2f", $row["variableSalary"]);
+                echo "<td>" . $row["variableSalary"] . "</td>";
                 $grant_total += $row["variableSalary"];
                 $variable_total += $row["variableSalary"];
             } else
