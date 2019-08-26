@@ -182,19 +182,19 @@ if ($result->num_rows > 0) {
 
             if ($row["BasicSalary"] != NULL) {
                 $row["BasicSalary"] = sprintf("%.2f", $row["BasicSalary"]);
-                echo "<td>" . $row["BasicSalary"] . "</td>";
+                echo "<td>" .number_format( $row["BasicSalary"],2) . "</td>";
 
             } else
                 echo "<td> 0.00 </td>";
 
             if ($row["variableSalary"] != NULL) {
                 $row["variableSalary"] = sprintf("%.2f", $row["variableSalary"]);
-                echo "<td>" . $row["variableSalary"] . "</td>";
+                echo "<td>" .number_format($row["variableSalary"],2) . "</td>";
 
             } else
                 echo "<td> 0.00 </td>";
 
-            echo "<td>" . $row["deductions"] . "</td>";
+            echo "<td>" .number_format($row["deductions"],2) . "</td>";
 
             if ($row["leaveCount"] != NULL)
                 echo "<td>" . $row["leaveCount"] . "</td>";

@@ -164,7 +164,7 @@ if ($result->num_rows > 0) {
 
             if ($row["BasicSalary"] != NULL) {
                 $row["BasicSalary"] = sprintf("%.2f", $row["BasicSalary"]);
-                echo "<td>" . $row["BasicSalary"] . "</td>";
+                echo "<td>" .number_format($row["BasicSalary"],2) . "</td>";
                 $grant_total += $row["BasicSalary"];
                 $basic_total += $row["BasicSalary"];
             } else
@@ -172,7 +172,7 @@ if ($result->num_rows > 0) {
 
             if ($row["variableSalary"] != NULL) {
                 $row["variableSalary"] = sprintf("%.2f", $row["variableSalary"]);
-                echo "<td>" . $row["variableSalary"] . "</td>";
+                echo "<td>" .number_format($row["variableSalary"],2) . "</td>";
                 $grant_total += $row["variableSalary"];
                 $variable_total += $row["variableSalary"];
             } else
@@ -194,7 +194,7 @@ if ($result->num_rows > 0) {
 //            } else
 //                echo "<td> 0.00 </td>";
 
-            echo "<td>" . $row["deductions"] . "</td>";
+            echo "<td>" .number_format($row["deductions"],2) . "</td>";
 
             if ($row["leaveCount"] != NULL)
                 echo "<td>" . $row["leaveCount"] . "</td>";
@@ -203,8 +203,8 @@ if ($result->num_rows > 0) {
 
             echo "</tbody>";
         }
-    }echo "<thead  style='font-size:15px;  class = 'table table-striped  table-bordered  table-hover table-sm' class='table-warning'><th></th><th></th><th></th><th></th><th></th> <th></th><th>Total Basic</th><th>AED " . $basic_total . "</th><th>Total Variable</th><th>AED ". $variable_total .
-            "</th><th>Grant Total</th><th>AED " . $grant_total . "</th></thead>"; 
+    }echo "<thead  style='font-size:15px;  class = 'table table-striped  table-bordered  table-hover table-sm' class='table-warning'><th></th><th></th><th></th><th></th><th></th> <th></th><th>Total Basic</th><th>AED " .number_format($basic_total,2) . "</th><th>Total Variable</th><th>AED ".number_format( $variable_total,2) .
+            "</th><th>Grant Total</th><th>AED " .number_format($grant_total,2) . "</th></thead>"; 
 } else {
 
     $flag = 1;
