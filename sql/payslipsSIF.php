@@ -158,8 +158,10 @@ if ($result->num_rows > 0) {
 //                echo "<td> 0.00 </td>";
             if ($row["BasicSalary"] < 0) {
                 $row["variableSalary"] = $row["variableSalary"] + $row["BasicSalary"];
+                $row["BasicSalary"]  = 0.00;
             } else if ($row["variableSalary"] < 0) {
                 $row["BasicSalary"] = $row["BasicSalary"] + $row["variableSalary"];
+                $row["variableSalary"]  = 0.00;
             }
 
             if ($row["BasicSalary"] != NULL) {

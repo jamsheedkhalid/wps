@@ -99,6 +99,7 @@ if ($result->num_rows > 0) {
                                             <th scope=col>Days Paid</th>
                                             <th scope=col>Fixed Salary</th>  
                                             <th scope=col>Variable Salary</th>
+                                            <th scope=col>Total Pay</th>
                                             <th scope=col>Deduction</th>
                                             <th scope=col>Days on Leave</th>
                                             <th scope=col>Reason</th>
@@ -116,6 +117,7 @@ if ($result->num_rows > 0) {
                                             <th scope=col>Days Paid</th>
                                             <th scope=col>Fixed Salary</th>  
                                             <th scope=col>Variable Salary</th>
+                                            <th scope=col>Total Pay</th>
                                             <th scope=col>Deduction</th>
                                             <th scope=col>Days on Leave</th>
                                             <th scope=col>Reason</th>
@@ -176,8 +178,10 @@ if ($result->num_rows > 0) {
 
             if ($row["BasicSalary"] < 0) {
                 $row["variableSalary"] = $row["variableSalary"] + $row["BasicSalary"];
+                $row["BasicSalary"]  = 0.00;
             } else if ($row["variableSalary"] < 0) {
                 $row["BasicSalary"] = $row["BasicSalary"] + $row["variableSalary"];
+                $row["variableSalary"]  = 0.00;
             }
 
             if ($row["BasicSalary"] != NULL) {
@@ -193,7 +197,7 @@ if ($result->num_rows > 0) {
 
             } else
                 echo "<td> 0.00 </td>";
-
+            echo "<td>" .number_format($row["BasicSalary"]+$row["variableSalary"],2) . "</td>";
             echo "<td>" .number_format($row["deductions"],2) . "</td>";
 
             if ($row["leaveCount"] != NULL)

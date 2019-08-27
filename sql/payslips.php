@@ -54,7 +54,7 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
 
 
-    $basic_total = $variable_total = $grant_total = 0.0;
+    $basic_total = $variable_total = $grant_total = $totalDeduction = 0.0;
 
     while ($row = $result->fetch_assoc()) {
         $iban = $routing_no = $employee_account = '';
@@ -99,6 +99,7 @@ if ($result->num_rows > 0) {
                                             <th scope=col>Days Paid</th>
                                             <th scope=col>Fixed Salary</th>  
                                             <th scope=col>Variable Salary</th>
+                                            <th scope=col>Total Pay</th>
                                             <th scope=col>Deduction</th>
                                             <th scope=col>Days on Leave</th>
                                         </tr>
@@ -148,8 +149,10 @@ if ($result->num_rows > 0) {
 
             if ($row["BasicSalary"] < 0) {
                 $row["variableSalary"] = $row["variableSalary"] + $row["BasicSalary"];
+                $row["BasicSalary"]  = 0.00;
             } else if ($row["variableSalary"] < 0) {
                 $row["BasicSalary"] = $row["BasicSalary"] + $row["variableSalary"];
+                $row["variableSalary"]  = 0.00;
             }
 
             if ($row["BasicSalary"] != NULL) {
@@ -168,8 +171,9 @@ if ($result->num_rows > 0) {
             } else
                 echo "<td> 0.00 </td>";
 
-
+            echo "<td>" .number_format($row["BasicSalary"]+$row["variableSalary"],2) . "</td>";
             echo "<td>" .number_format($row["deductions"],2) . "</td>";
+            $totalDeduction += $row['deductions'];
 
             if ($row["leaveCount"] != NULL)
                 echo "<td>" . $row["leaveCount"] . "</td>";
@@ -179,8 +183,8 @@ if ($result->num_rows > 0) {
 
             echo "</tbody>";
         }
-    } echo "<thead  style='font-size:15px;  class = 'table table-striped  table-bordered  table-hover table-sm' class='table-warning'><th></th><th></th><th></th><th></th><th></th> <th></th><th>Total Basic</th><th>AED " . number_format($basic_total,2) . "</th><th>Total Variable</th><th>AED " .number_format($variable_total,2) .
-    "</th><th>Grant Total</th><th>AED " .number_format($grant_total,2)  . "</th></thead>";
+    } echo "<thead  style='font-size:15px;  class = 'table table-striped  table-bordered  table-hover table-sm' class='table-warning'><th></th><th></th><th></th><th></th><th></th><th></th> <th></th><th>Total</th><th style='font-size:12px'>Basic <br> AED " .number_format($basic_total,2) . "</th><th  style='font-size:12px'>Variable <br>AED ".number_format( $variable_total,2) .
+            "</th><th style='font-size:12px'>Pay <br>AED " .number_format($grant_total,2) . "</th><th style='font-size:12px'>Deduction <br>AED " .number_format($totalDeduction,2) . "</th><th></th></thead>"; 
 } else {
 
     $flag = 1;
